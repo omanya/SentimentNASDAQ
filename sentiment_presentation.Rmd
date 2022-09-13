@@ -159,7 +159,7 @@ with an asymptotic $95\%$-confidence interval given in brackets.
 
 ## How do we interpret the results?
 
-- $rightarrow$ in low return state also positive news can lead to a negative effect on the excess return.
+- $\rightarrow$ in low return state also positive news can lead to a negative effect on the excess return.
 
 - We explain this effect with the trading strategy *'Buy on rumor, sell on news'* for  low return states.
 - investors buy equities with low returns when they expect their growth (btm, the 'rumor' part) and sell low return stocks to ride on the hype of (positive) news arrivals. 
