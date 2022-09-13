@@ -1,0 +1,423 @@
+---
+title: "'Buy on rumor, sell on news': the effect of news arrivals and investor sentiment on the distribution of excess returns"
+author: Maria Osipenko^[Hochschule für Wirtschaft und Recht Berlin; osipenko@hwr-berlin.de], Rui Ren^[Humboldt-Universität zu Berlin]
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  bookdown::html_document2:
+  bookdown::pdf_document2:
+    toc: false
+    fig_caption: yes
+    keep_tex: true
+bibliography: [packages.bib, references.bib] 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r,echo=FALSE, include=FALSE}
+# usethis::create_from_github(
+#   "https://github.com/omanya/SentimentNASDAQ.git",
+#   destdir = "C:/Users/osipenko/Downloads/"
+# )
+```
+
+
+# Abstract {-}
+We analyse how the distribution of excess returns is influenced by investor sentiment by applying the expectile panel data model with random effects to a cross section of $100$ excess equity returns in NASDAQ. We assess the investor sentiment for the model in a two-fold manner:
+
+- by employing the dictionary method for extracting the individual news sentiment from NASDAQ news articles relevant to a particular equity. This is a direct sentiment channel (the 'news');
+- by using the individual book-to-market ratios as a proxy for investor expectations regarding the equity. This is the indirect sentiment channel (the 'rumor').
+
+We control for other market driving factors by predicting the individual returns using latent factors extracted from a cross section of book-to-market ratios for NASDAQ 100 portfolio. 
+
+We find a varying effect of both types of sentiment. This effect depends on the expectile level $\tau$, which itself can be understood as the 'state of the world' for individual equity returns. While not always significant for the mean regression, the two types of the sentiment still impact the distribution of asset returns (in case of normality - it impacts the volatility) which we show empirically. 
+
+When comparing different measures of sentiment - two dictionary based approaches and one machine learning technique - we observe, that the later can better capture the U-shaped coefficient profile of sentiment effect over different expectile levels. As a result, we propose an expectile weighted combination of the two dictionary measures which improves the estimation results.  Although not outperforming the machine learning sentiment measure, our strategy is a valid alternative to the later due to its much lower complexity.
+
+```{r,echo=FALSE, include=FALSE}
+#citations for the packages
+knitr::write_bib(c("knitr", "rmarkdown", "sandwich","kableExtra"), width = 60,file ="packages.bib")
+```
+
+
+# Literature review {-}
+
+Many authors study financial indicators which can be good return predictors.  @FAMA1992,  @KOTHARI1997  and @PONTIFF1998 were one of the first to point out that book-to-market ratio enhances better predictability of returns as an indicator of future earnings.
+
+@Billings2001 lag component in BTM ratio related to past price changes is useful in predicting returns. The authors also discover its strong association with earnings forecasts.
+
+@NI2015 find an non-linear effect of investor sentiment specified as opening accounts
+number and turnover rates on quantiles of returns in Chinese stock market.
+
+@Ma2018 examine distributional effects of investor sentiment using quantile regression and find predictive relevance of investor sentiment for lower quantiles. @ALNASSERI2021 show a positive contemporaneous association of twitter sentiment with higher return quantiles and a negative association of past sentiment with at lower return quantiles.
+
+
+# Data 
+
+We use excess returns of NASDAQ stocks and the associated news articles in the period 01.01.2015 - 30.09.2019 (check) from Bloomberg (?)...
+
+```{r,echo=FALSE}
+rm(list=ls())
+set.seed(123)
+data<-read.csv("data.csv")
+data$Date<-as.POSIXct(data$Date)
+
+#rename ML sentiment
+colnames(data)[grepl("RFFin",colnames(data))]<-"ML.TONE"
+data$ML_pos<-0; data$ML_pos[data$ML.TONE>0]<-data$ML.TONE[data$ML.TONE>0]
+data$ML_neg<-0; data$ML_neg[data$ML.TONE<0]<--data$ML.TONE[data$ML.TONE<0]
+data$news<-ifelse(data$word_count>0,1,0)
+
+
+colnames(data)[grepl("RF12",colnames(data))]<-"ML.TONE12"
+colnames(data)[grepl("FinNN",colnames(data))]<-"ML.TONENN"
+
+#scale
+cols_scale<-c("LM.TONE","HIV4.TONE","ML.TONE","ML.TONE12","ML.TONENN")
+scale01<-function(x){
+  xx<-x/(max(abs(x),na.rm=T))
+}
+data[,cols_scale]<-apply(data[,cols_scale],2,scale01)
+
+#substitute negative btms
+data$BTM[data$BTM<0]<-0
+
+```
+
+
+<!--Compute lagged/one-step ahead variables:-->
+
+```{r, echo=FALSE}
+Ticker<-unique(data$Ticker)
+ret1<-numeric(nrow(data))
+btm1<-numeric(nrow(data))
+news1<-news2<-news3<-news4<-news5<-numeric(nrow(data))
+for(i in 1:length(Ticker)){
+  ind<-which(data$Ticker==Ticker[i])
+  ret1[ind]<-c(NA,data$r_.ab.[ind[-length(ind)]]) #lag of return
+  btm1[ind]<-c(NA,data$BTM[ind[-length(ind)]]) #lag of btm
+  #lags of 
+  #news arrivals
+  news1[ind]<-c(NA,data$news[ind[-length(ind)]])
+  news2[ind]<-c(NA,news1[ind[-length(ind)]]) 
+  news3[ind]<-c(NA,news2[ind[-length(ind)]]) 
+  news4[ind]<-c(NA,news3[ind[-length(ind)]]) 
+  news5[ind]<-c(NA,news4[ind[-length(ind)]]) 
+}
+
+data$ret1=ret1
+data$btm1<-btm1
+data$news1<-news1;  data$news2<-news2; data$news3<-news3; data$news4<-news4;  data$news5<-news5
+
+rm(btm1)
+rm(ret1)
+```
+
+(assumption: the intraday returns do not influence news articles of the same day)
+
+## The 'news' part
+
+Many authors study news impact on returns and discover significant connection of negative words and market performance, see @Barberis2005, @TETLOCK2007 and @UHL2014 among others.  @SHANG2014 for instance find a significant effect of only related to the negative announcements...
+
+@YU2021  estimate news impact quantified by credibility measures, topic arousal and some emotional indicators  (as questions and exclamations). Interestingly, they get coefficients of different sign for different periods and financial assets.
+
+We focus on credible and broadly accessible announcement channel: NASDAQ news articles. We compute news sentiment assessments using the LM and HV dictionary as well as machine learning sentiment...
+We simultaneously consider positive and negative sentiment, as @FANG2021 show that both effect the volatility.
+
+
+@Antweiler2004 find that the number and extent of text messages influences stock volatility but not returns.  @DAS2007 observe that the
+message volume (regarded as optimistic sentiment) is positively correlated with stock volatility but negatively correlated with stock returns. See more references in @KEARNEY2014. @RENAULT2017 provides an evidence for sentiment-driven intraday trading. @HAGENAU2013 and Nguyen et al 2015 @NGUYEN2015 among others are able to significantly improve their return forecast by using sentiment from news or social media. On the other hand, @KIM2014 find no evidence for predictive power of sentiment neither on returns nor on volatility or trading volume. Recently, @AUDRINO2020 and @FANG2021 again report an improvement in volatility forecasts on using sentiment from news and social media. These controversial findings lead us to a hypothesis, that the effects maybe dependent on a hidden "state of the world" for a particular return. This is confirmed in the results of @Ma2018 where the quantiles of returns are effected rather than the mean. It is also supported by the findings of @FRANKEL2022, where the nonparametric sentiment methods (like random forest) outperform the parametric ones.
+
+from @FANG2021:
+" the investors' optimistic sentiments are assumed to more significantly raise
+the current stock volatility than their pessimistic sentiments... the positive effects of investor sentiments on return volatility are expected to decrease in the subsequent period(s)"
+
+
+
+## The 'rumor' part
+
+Here we use $btm_{i,t-1}$ as a proxi for performance expectations. Under residual income valuation model (see Peasnell, 1982) connects the value of stocks and the expectation of future abnormal earnings:
+
+\[v_{i,t}= bv_{it} + \sum_{h=1}^\infty \frac1{(1+r)^h}\mathbb E_t(r_{i,t+h}^a)\]
+
+where $v_{i,t}$ is the market value and $bv_{i,t}$ is the book value of  equity $i$, $r_{i,t}^a$ excess returns at $t$ and $r$ is the cost of capital.
+
+\[btm_{i,t} = \frac{bv_{it}}{v_{i,t}}\]
+
+@DONNELLY2014 writes "The intuition is that the prices of growth stocks are much more sensitive to earnings expectations than those of value stocks." and "Accordingly, their
+prices are more sensitive than value stocks to any earnings surprise regardless of the sign."
+
+
+# Expectile regression with random effects (ERRE)
+
+To estimate distributional effects of news arrivals and news sentiment we use expectile regression with random effects for the panel data (https://hal.archives-ouvertes.fr/hal-01421752/document).
+
+Consider a standard panel data model for the excess returns ($r_{i,t}$) of $n$ stocks over $t=1,\ldots, T$ and $i=1,\ldots,n$:
+\[r_{i,t} = x_{i,t}^\top\beta + u_i + v_{i,t}\]
+
+with response $r_{i,t}$ being the excess return of stock $i$ at time $t$ computed as ...
+and $x_{i,t}$ a vector of $p$ predictors (including the constant) for the stock $i$ known at time $t$. Here $u_i$ is unobserved random individual effect uncorrelated with $x_{i,t}$ and $v_{i,t}$ is an error term uncorrelated with $x_{i,t}$ as well.
+
+Let $Z$ denote the stock indicator matrix, then, in matrix notation the random effects model becomes:
+
+\[R = X\beta + Zu + v = X\beta +\varepsilon\]
+
+$\beta$ can be estimated via least squares. A general form of variance-covariance is computed to account for the correlation in residuals ...
+
+
+Definition and interpretation of expectiles...
+
+
+The conditional expectile regression with random effects as introduced in @BARRY2016 aims at finding the conditional expectile:
+
+\[e(\tau, r_{i,t},x_{i,t}) = x_{i,t}^\top \beta_\tau, i=1,\ldots, n, t=1,\ldots T,\]
+
+where $\tau\in (0,1)$ is the expectile level.
+
+The estimator minimizes the expectile loss function:
+
+\[\arg\min_{\beta\in\mathbb R^p}\frac 1n\sum_{i=1}^n\sum_{t=1}^T\rho_\tau\Big(r_{i,t} - x_{i,t}\beta(\tau)\Big)\]
+
+with $\rho_\tau(y)=|\tau - \mathbf 1(y<0)|y^2$ is the expectile check function.
+
+The resulting estimator has the form:
+\[\hat\beta_\tau = \Big(\sum_{i=1}^n\sum_{t=1}^T\hat w_{i,t} (\tau)x_{i,t}x_{i,t}^\top\Big)^{-1}\Big(\sum_{i=1}^n\sum_{t=1}^T\hat w_{i,t} (\tau)x_{i,t}r_{i,t}\Big)\]
+
+with $\hat w_{i,t}(\tau) = |\tau - \mathbf 1(r_{i,t}\leq x_{i,t}\hat\beta(\tau))|$
+
+and can be computed via iterative weighted asymmetric least squares.
+
+@BARRY2016 show asymptotic normality of the estimator under mild assumptions:
+
+\[\sqrt{n}(\hat \beta_\tau - \beta_\tau)\rightarrow \mathcal N(0,H^{-1}\Sigma H^{-1})\]
+
+The variances-covariances matrix of the estimator can be estimated via:
+
+\[\hat H=X^\top\hat W X/n, \text{where } \hat W = diag(\hat w_{1,1}(\tau),\ldots,\hat w_{n,T})\]
+
+and \[\hat \Sigma = X^\top\hat W\hat\varepsilon\hat \varepsilon^\top\hat WX/n\].
+
+We compute robust standard errors for the ERRE-coefficients with R-Package *sandwich*.
+
+<!--functions for fitting the ERRE:-->
+
+```{r, echo=FALSE}
+source("myfuns.R")
+```
+
+
+
+
+
+## ERRE with LM sentiment
+
+Our first model specification is:
+
+\begin{equation}
+r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot lm\_tone_{i,t}(\#eq:mod0)
+\end{equation}
+
+ with
+ 
+ - $r_{i,t}$ the excess return of equity $i$ at time $t$, computed as ...
+ 
+ - $\log(size_{i,t})$ the logarithm of the size? of the company 
+ 
+ - $turn_{i,t}$ turnover
+ 
+ - $btm_{i,t-1}$ the book-to-market ratio if $i$ in $t-1$
+ 
+ - $alpha_{i,t}$ @FAMA1992 alpha computed based on the past returns (?)
+ 
+ - $nq_{i,t}$ indicator whether company $i$ is listed on NASDAQ
+ 
+ - $news_{i,t}$ indicator whether a news report referred to company $i$ has been released at $t$
+ 
+<!-- - $lm\_pos_{i,t}$ and $lm\_neg_{i,t}$ scaled positive and negative sentiment obtained via the dictionary method as a fraction of positive / negative words from the dictionary and total words in the news articles at $t$ related to the equity $i$.-->
+
+- $lm\_tone_{i,t}$ is news sentiment computed as $\frac{\#\text{ of positive words} - \# \text{ of negative words}}{\#\text{ of positive words}+\# \text{ of negative words}}$ using the LM dictionary.
+ 
+
+ 
+We fit the models as specified in Equation \@ref(eq:mod0) for $\tau\in\{0.05,0.1,\ldots,0.95\}$ and show the resulting coefficients, their significance (based on robust covariance matrix) and the associated $R^2$ in Table \@ref(tab:table1).
+
+```{r,echo=FALSE}
+
+ind_use<-which(!is.na(data$btm1)&!data$Year%in%c("")&!as.character(data$Ticker)%in%c(""))#,AGI","AMD","CHK","TWTR"))
+formul<-as.formula("r_.ab.~ log(Size) +PREFALPHA + TURNOVER +NASDAQ+btm1   +news+LM.TONE")
+
+mod0<-fit_eeffects(formul=formul,dat=data[ind_use,])
+
+```
+
+
+```{r table1,echo=FALSE}
+
+make_knitr_table(mod0)
+
+```
+
+plot the sentiment related effects with $95\%$-CI in Figure \@ref(fig:figure1):
+
+```{r figure1, fig.cap="Coefficient profiles of sentiment related variables for different $\\tau$-levels using LM dictionary based sentiment ", echo=FALSE}
+effe<-"lm"# which effect is measured lm, hv, ml            
+lbls<-c(bquote(btm[it-1]),bquote(news[it]), 
+        bquote(.(paste0(effe,"_tone"))[it])
+)
+al<-0.95
+wo<-c("btm1", "news","LM.TONE")
+
+plot_eefects(mod0,which_ones=wo,lbls=lbls[1:length(wo)])
+
+```
+
+The effects of the btm ratio (approximating the 'rumor') and of the  news arrivals (the 'news') differ with the expectile levels.  Those effects change sign depending on whether low or high expectiles are considered.
+The effect of news arrivals is positive for higher expectiles and is sharpened by the sign of the associated sentiment tone. However, we observe a strongly negative effect of news arrivals for low return expectiles regardless of the news tone. For example, given the data, the maximum of scaled $lm\_tone$ over all days and stocks is `r round(quantile(data$LM.TONE,1),5)`, the respective coefficient for the $5\%$-expectile on news arrivals is \(`r round(mod0$coefs["news",1],5)`(`r round(mod0$coefs["news",1]- qnorm(1-al/2)*mod0$ses["news",1],5)`, `r round(mod0$coefs["news",1]+ qnorm(1-al/2)*mod0$ses["news",1],4)`)\) and on net tone is \(`r round(mod0$coefs["LM.TONE",1],5)`(`r round(mod0$coefs["LM.TONE",1]- qnorm(1-al/2)*mod0$ses["LM.TONE",1],5)`, `r round(mod0$coefs["LM.TONE",1]+ qnorm(1-al/2)*mod0$ses["LM.TONE",1],5)`)\), so the net effect of the "best" empirical tone would calculate: 
+\[`r round(mod0$coefs["news",1] + mod0$coefs["LM.TONE",1]* quantile(data$LM.TONE,1),5)` (`r round(mod0$coefs["news",1]- qnorm(1-al/2)*mod0$ses["news",1]+(mod0$coefs["LM.TONE",1]- qnorm(1-al/2)*mod0$ses["LM.TONE",1])*quantile(data$LM.TONE,1),5)`,
+`r round(mod0$coefs["news",1]+ qnorm(1-al/2)*mod0$ses["news",1]+(mod0$coefs["LM.TONE",1]+ qnorm(1-al/2)*mod0$ses["LM.TONE",1])*quantile(data$LM.TONE,1),5)`)\]
+
+with an asymptotic $95\%$-confidence interval given in brackets.
+That is, in low return state also positive news can lead to a negative effect on the excess return. We explain this effect with the trading strategy 'Buy on rumor, sell on news' for the low return state. That is, some investors tend to buy equities with low returns when they expect their growth (the 'rumor' part)  (when they are believed to be underpriced) and sell low return stocks to ride on the hype of positive news arrivals. 
+
+This effect can be also connected to the 'sidedness' of @SARKAR2009. The negative effect of (even positive) news can be explained by disproportionaly higher seller quote at news arrivals in case of low performing equities. The positive effect of btm ratio arises as a result of buyer 'sidedness' hunting the equities with low returns but promising expected performance (high btm).
+ 
+ maybe also this as explaination on limit-order-book level: https://www.sciencedirect.com/science/article/abs/pii/S2214635014000240  
+
+## ERRE with HV sentiment
+
+In this model specification, we use $hv\_pos$ and $hv\_neg$ sentiment indices constructed using the Harvard dictionary:
+
+\begin{equation}
+r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot hv\_tone_{i,t}(\#eq:mod1)
+\end{equation}
+ with
+ 
+We fit the model for $\tau\in\{0.05,0.1,\ldots,0.95\}$ and show the resulting coefficients, their significance and the associated $R^2$ in table \@ref(tab:table2).
+
+```{r, echo=FALSE}
+formul<-as.formula("r_.ab.~ log(Size) +PREFALPHA + TURNOVER + NASDAQ +  btm1  + news+HIV4.TONE")
+mod1<-fit_eeffects(formul=formul,dat=data[ind_use,])
+
+```
+
+
+```{r table2,echo=FALSE}
+make_knitr_table(mod1,  sent="hv",caption = "Coefficients and $R^2$ of the ERRE models with HV sentiment and different $\\tau$s"
+                 #,
+                 #id="id=\"table2\""
+                 )
+
+```
+
+plot the sentiment related effects with $95\%$-CI in Figure \@ref(fig:figure2):
+
+```{r figure2, fig.cap="Coefficient profiles of sentiment related variables for different $\\tau$-levels using HV dictionary based sentiment ", echo=FALSE}
+effe<-"hv"# which effect is measured lm, hv, ml            
+lbls<-c(bquote(btm[it-1]),bquote(news[it]), 
+        bquote(.(paste0(effe,"_tone"))[it])
+)
+wo<-c("btm1", "news","HIV4.TONE")
+
+plot_eefects(mod1,which_ones=wo,lbls=lbls[1:length(wo)])
+```
+
+While using another dictionary, we still observe the similar changing sign effect of news arrivals which is then corrected for low $\tau$-values (low return expectiles). The correction is vanishing with higher $\tau$. Interestingly, whereas the tone coefficient gains magnitude for lower $\tau$s in the case of the HV dictionary, the contrary is true for the LM dictionary: the tone coefficient is constant for low expectiles and it increases with  $\tau$. Hence the HV dictionary seems to capture important tone for lower expectiles and the LM dictionary - for both low and high expectiles focusing more on higher levels. 
+ 
+## ERRE with ML sentiment
+
+In this model specification, we use $ml\_tone_{i,t}$ defined as an out-of-sample return forecast for stock $i$ and time $t$ produced by a random forest model based on the 
+<!--$|\hat r^{RFFin}|\mathbf 1_{r^{RFFin}>0}$ as positive ML sentiment and $|\hat r^{RFFin}|\mathbf 1_{r^{RFFin}<0}$ as negative sentiment indices constructed using the machine learning approach with--> FinBert embeddings:
+
+\begin{equation}
+r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot ml\_tone_{i,t}(\#eq:mod2)
+\end{equation}
+ with
+ 
+We fit the model for $\tau\in\{0.05,0.1,\ldots,0.95\}$ and show 
+
+```{r, echo=FALSE}
+formul<-as.formula("r_.ab.~log(Size)+ PREFALPHA +  TURNOVER +NASDAQ +  btm1 +news + ML.TONE")#ML_pos + ML_neg")
+
+mod2<-fit_eeffects(formul=formul,dat=data[ind_use,])
+```
+
+show the resulting coefficients, their significance and the associated $R^2$ in table \@ref(tab:table3).
+
+```{r table3,echo=FALSE}
+make_knitr_table(mod2,  sent="ml",caption = "Coefficients and $R^2$ of the ERRE models with ML sentiment and different $\\tau$s"
+                 #,
+                 #id="id=\"table3\""
+                 )
+
+```
+
+As seen, using ML sentiment tone improves the models in terms of $R^2$ compared to LM and HV tone. The changing sign effect of news arrivals is retained. 
+
+plot the sentiment related effects with $95\%$-CI in Figure \@ref(fig:figure3):
+
+```{r figure3, fig.cap="Coefficient profiles of sentiment related variables for different $\\tau$-levels using ML based sentiment ", echo=FALSE}
+effe<-"ml"# which effect is measured lm, hv, ml            
+lbls<-c(bquote(btm[it-1]),bquote(news[it]), 
+        bquote(.(paste0(effe,"_tone"))[it])
+)
+wo<-c("btm1", "news","ML.TONE")
+
+plot_eefects(mod2,which_ones=wo,lbls=lbls[1:length(wo)])
+```
+
+ML tone seems to capture both facets of sentiment: for lower and for higher expectiles in a U-formed coefficient profile. The effect of ML tone over changing $\tau$ is not significantly different from a constant one. 
+
+## ERRE with combined sentiment
+
+In this model specification, we use $comb\_tone_{i,t}$ set to $(1-\tau)\cdot hv\_tone_{i,t}+ \tau\cdot lm\_tone_{i,t}$ in order to overweight $hv\_tone_{i,t}$ for low and to overweight $lm\_tone_{i,t}$ for high $\tau$-values:
+
+\begin{equation}
+r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot comb\_tone_{i,t}(\#eq:mod3)
+\end{equation}
+ with
+ 
+We fit the model for $\tau\in\{0.05,0.1,\ldots,0.95\}$ and show 
+
+```{r, echo=FALSE}
+formul<-as.formula("r_.ab.~log(Size)+ PREFALPHA +  TURNOVER +NASDAQ +  btm1 +news + comb.tone")#ML_pos + ML_neg")
+
+mod3<-fit_eeffects(formul=formul,dat=data[ind_use,])
+
+```
+
+show the resulting coefficients, their significance and the associated $R^2$ in table \@ref(tab:table4).
+
+```{r table4,echo=FALSE}
+make_knitr_table(mod3,  sent="comb",caption = "Coefficients and $R^2$ of the ERRE models with combined dictionary sentiment and different $\\tau$s"
+                 #,
+                 #id="id=\"table3\""
+                 )
+
+```
+
+plot the sentiment related effects with $95\%$-CI in Figure \@ref(fig:figure4):
+
+```{r figure4, fig.cap="Coefficient profiles of sentiment related variables for different $\\tau$-levels and LM/HV combined dictionary based sentiment ", echo=FALSE}
+effe<-"comb"# which effect is measured lm, hv, ml            
+lbls<-c(bquote(btm[it-1]),bquote(news[it]), 
+        bquote(.(paste0(effe,"_tone"))[it])
+)
+wo<-c("btm1", "news","comb.tone")
+
+plot_eefects(mod3,which_ones=wo,lbls=lbls[1:length(wo)])
+```
+
+The model fit is improved in terms of $R^2$. The combined dictionary model still can not "beat" the machine learning approach to the sentiment tone extraction. However, it clearly replicates the "edge" effect in an U-shape coefficient profile and is to prefer in terms of complexity and transparency/ interpretability of the results. 
+
+```{r,echo=FALSE}
+save(file="mod0.RData",mod0)
+save(file="mod1.RData",mod1)
+save(file="mod2.RData",mod2)
+save(file="mod3.RData",mod3)
+```
+
+
+# References
+
+<div id="refs"></div>
