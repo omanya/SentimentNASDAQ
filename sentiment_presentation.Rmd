@@ -72,7 +72,7 @@ where $\tau\in (0,1)$ is the expectile level.
 
 - The estimator minimizes the expectile loss function:
 
-\[\arg\min_{\beta\in\mathbb R^p}\frac 1n\sum_{i=1}^n\sum_{t=1}^T\rho_\tau\Big(r_{i,t} - x_{i,t}\beta(\tau)\Big)\]
+\[\arg\min_{\beta\in\mathbb R^p}\frac 1n\sum_{i=1}^n\sum_{t=1}^T\rho_\tau\Big(r_{i,t} - x_{i,t}\beta_\tau\Big)\]
 
 with $\rho_\tau(y)=|\tau - \mathbf 1(y<0)|y^2$ is the expectile check function.
 
@@ -82,7 +82,7 @@ with $\rho_\tau(y)=|\tau - \mathbf 1(y<0)|y^2$ is the expectile check function.
 - The resulting estimator has the form:
 \[\hat\beta_\tau = \Big(\sum_{i=1}^n\sum_{t=1}^T\hat w_{i,t} (\tau)x_{i,t}x_{i,t}^\top\Big)^{-1}\Big(\sum_{i=1}^n\sum_{t=1}^T\hat w_{i,t} (\tau)x_{i,t}r_{i,t}\Big)\]
 
-with $\hat w_{i,t}(\tau) = |\tau - \mathbf 1(r_{i,t}\leq x_{i,t}\hat\beta(\tau))|$
+with $\hat w_{i,t}(\tau) = |\tau - \mathbf 1(r_{i,t}\leq x_{i,t}\hat\beta_\tau)|$
 
 and can be computed via *iterative weighted asymmetric least squares*.
 
