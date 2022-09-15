@@ -66,7 +66,7 @@ $\rightarrow$ estimate distributional effect of news arrivals and sentiment usin
 
 - Conditional expectile regression with random effects (@BARRY2016) aims to estimate the $\tau$-expectile:
 
-\[e(\tau, r_{i,t},x_{i,t}) = x_{i,t}^\top \beta_\tau, i=1,\ldots, n, t=1,\ldots T,\]
+\[e_\tau(r_{i,t})  = x_{i,t}^\top \beta_\tau, i=1,\ldots, n, t=1,\ldots T,\]
 
 where $\tau\in (0,1)$ is the expectile level.
 
@@ -91,7 +91,7 @@ and can be computed via *iterative weighted asymmetric least squares*.
 Our first model specification is:
 
 \begin{align}
-r_{i,t} =& \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
+e_\tau(r_{i,t}) &= \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
 &+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot lm\_tone_{i,t}
 \end{align}
 
@@ -171,7 +171,7 @@ with an asymptotic $95\%$-confidence interval given in brackets.
 Our second model specification is:
 
 \begin{align}
-r_{i,t} =& \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
+e_\tau(r_{i,t}) &= \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
 &+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot lm\_tone_{i,t}
 \end{align}
 
@@ -211,7 +211,7 @@ plot_eefects(mod1,which_ones=wo,lbls=lbls[1:length(wo)])
 Our next model specification is:
 
 \begin{align}
-r_{i,t} =& \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
+e_\tau(r_{i,t}) &= \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
 &+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot ml\_tone_{i,t}
 \end{align}
 
@@ -244,14 +244,14 @@ plot_eefects(mod2,which_ones=wo,lbls=lbls[1:length(wo)])
 - the effects of news arrivals and btm ratio are similar to the previous models.
 - explanatory power of ML approach is higher than that of LM/HV dictionary (as mesured by $R^2$)
 - ML tone seems to capture the facetts of sentiment important for both lower and higher expectiles (U-shape).
-- $rightarrow$ can we achieve better performance of dictionary methods by mimicing the ML approach, i.e.by combining both sentiment tones, so that important features for lower and higher expectiles are captured?
+- $\rightarrow$ can we achieve better performance of dictionary methods by mimicing the ML approach, i.e.by combining both sentiment tones, so that important features for lower and higher expectiles are captured?
 
 ## ERRE with combined LM/HV sentiment: the Model
 
 In this model specification we use $comb\_tone_{i,t}$ set to $(1-\tau)\cdot hv\_tone_{i,t}+ \tau\cdot lm\_tone_{i,t}$ in order to overweight $hv\_tone_{i,t}$ for low and to overweight $lm\_tone_{i,t}$ for high $\tau$-values:
 
 \begin{align}
-r_{i,t} =& \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
+e_\tau(r_{i,t}) &= \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}\\\nonumber
 &+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot comb\_tone_{i,t}
 \end{align}
 
