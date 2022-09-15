@@ -169,9 +169,9 @@ $\beta$ can be estimated via least squares. A general form of variance-covarianc
 Definition and interpretation of expectiles...
 
 
-The conditional expectile regression with random effects as introduced in @BARRY2016 aims at finding the conditional expectile:
+The conditional expectile regression with random effects as introduced in @BARRY2016 aims at finding the conditional expectile (given $x_{i,t}$):
 
-\[e(\tau, r_{i,t},x_{i,t}) = x_{i,t}^\top \beta_\tau, i=1,\ldots, n, t=1,\ldots T,\]
+\[e_\tau(r_{i,t}) = x_{i,t}^\top \beta_\tau, i=1,\ldots, n, t=1,\ldots T,\]
 
 where $\tau\in (0,1)$ is the expectile level.
 
@@ -215,7 +215,7 @@ source("myfuns.R")
 Our first model specification is:
 
 \begin{equation}
-r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot lm\_tone_{i,t}(\#eq:mod0)
+e_\tau(r_{i,t}) = \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot lm\_tone_{i,t}(\#eq:mod0)
 \end{equation}
 
  with
@@ -289,7 +289,7 @@ This effect can be also connected to the 'sidedness' of @SARKAR2009. The negativ
 In this model specification, we use $hv\_pos$ and $hv\_neg$ sentiment indices constructed using the Harvard dictionary:
 
 \begin{equation}
-r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot hv\_tone_{i,t}(\#eq:mod1)
+e_\tau(r_{i,t}) = \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot hv\_tone_{i,t}(\#eq:mod1)
 \end{equation}
  with
  
@@ -330,7 +330,7 @@ In this model specification, we use $ml\_tone_{i,t}$ defined as an out-of-sample
 <!--$|\hat r^{RFFin}|\mathbf 1_{r^{RFFin}>0}$ as positive ML sentiment and $|\hat r^{RFFin}|\mathbf 1_{r^{RFFin}<0}$ as negative sentiment indices constructed using the machine learning approach with--> FinBert embeddings:
 
 \begin{equation}
-r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot ml\_tone_{i,t}(\#eq:mod2)
+e_\tau(r_{i,t}) = \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot ml\_tone_{i,t}(\#eq:mod2)
 \end{equation}
  with
  
@@ -373,7 +373,7 @@ ML tone seems to capture both facets of sentiment: for lower and for higher expe
 In this model specification, we use $comb\_tone_{i,t}$ set to $(1-\tau)\cdot hv\_tone_{i,t}+ \tau\cdot lm\_tone_{i,t}$ in order to overweight $hv\_tone_{i,t}$ for low and to overweight $lm\_tone_{i,t}$ for high $\tau$-values:
 
 \begin{equation}
-r_{i,t} = \beta_0 + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot comb\_tone_{i,t}(\#eq:mod3)
+e_\tau(r_{i,t}) = \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot comb\_tone_{i,t}(\#eq:mod3)
 \end{equation}
  with
  
