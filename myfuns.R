@@ -180,7 +180,7 @@ make_knitr_table_all<-function(mod, #fitted model
                            are highlighted in blue, green and orange respectively.",
                            taus=seq(0.05,0.95,0.05),
                            row.names=c("Constant","$turn_{i,t-1}$","$pre\\_ean_{i,t}$","$ean_{i,t}$","$post\\_ean_{i,t}$","$news_{i,t}$",
-                            "$\\log(size_{i,t})$","$btm_{i,t-1}$", "$turn_{i,t-1}*days\\_ean_{i,t}$", "$(btm_{i,t-1}<1)*post\\_ean_{i,t}$",
+                            "$\\log(size_{i,t})$","$btm_{i,t-1}$", "$turn_{i,t-1}*days\\_ean_{i,t}$", "$(btm_{i,t-1}\\leq 1)*post\\_ean_{i,t}$",
                             "$supr_{i,t}$",  "$lm\\_tone_{i,t}$", "$hv\\_tone_{i,t}$", "$ml\\_tone_{i,t}$","$R^2$")
 
 ){
