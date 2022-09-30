@@ -220,64 +220,6 @@ make_knitr_table_all<-function(mod, #fitted model
     row_spec(15, bold = T, color = "black", background = "#D9D6DA")
 }
 
-make_knitr_table_bm<-function(mod, #fitted model
-                           sent="lm",#sentiment measure used
-                           which_tau=c(1,2,5,10,15,18,19), #taus to put in the table
-                           caption="Coefficients and $R^2$ of the ERRE models with LM sentiment and different $\\tau$s",
-                           taus=seq(0.05,0.95,0.05),
-                           row.names=NA
-                             #c("Constant","$\\log(size_{i,t})$","$\\alpha_{i,t}$","$turn_{i,t}$",
-                              #         "$nq_{i,t}$","$btm_{i,t-1}$","$news_{i,t}$",paste0("$",sent,"\\_tone_{i,t}$"),"$R^2$")
-                           #,
-                           #id="id=\"table1\""
-){
-  library(knitr)
-  library(kableExtra)
-  #https://stackoverflow.com/questions/53341155/coloring-rows-with-kableextra-based-on-cell-values
-  #https://haozhu233.github.io/kableExtra/awesome_table_in_pdf.pdf
-
-  #coefficient table
-  options(scipen=999)
-  tab0<-round(mod$coefs[,which_tau],5)
-  #pvals and stars
-  pvals<-2*(1-pt(abs(mod$coefs/mod$ses)[,which_tau], mod$mods[[1]]$df.residual))
-  stars<-matrix(rep("",nrow(mod$coefs)),dim(pvals)[1],dim(pvals)[2])
-  stars[pvals<0.001]<-"***"; stars[pvals>0.001&pvals<0.01]<-"**";  stars[pvals>0.01&pvals<0.05]<-"*"
-  #add stars
-  tab<-tab0
-  tab[tab>0]<-paste0(" ",tab[tab>0])
-  tab<-matrix(paste0(tab,stars,sep=""),dim(pvals)[1],dim(pvals)[2])
-  tab<-rbind(tab,round(mod$r2[c(1,2,5,10,15,18,19)],5))
-  if(is.na(row.names)){
-    row.names = c(names(coef(mod$mods[[1]])),"R^2")
-  }
-  rownames(tab)<-row.names
-
-  coln<-paste0("$\\beta_{",taus[which_tau],"}$")
-
-  knitr::kable(tab, align = "lllllll", "latex",
-               col.names = coln,
-               row.names = TRUE,
-               #table.attr = "id=\"table1\"",
-               digits = 5,
-               caption = caption,
-               escape = FALSE
-  )%>%kable_styling() %>%
-    row_spec(9, bold = T, color = "black",
-             background = "#DCDCDC"
-               # cut(c(0,as.numeric(tab[9,])), c(0,0.00005,0.0001,0.001,0.01,0.1,10),
-               #        #c("#F0F0F0", "#E8E8E8","#E0E0E0","#DCDCDC","#D3D3D3", "#C8C8C8")))%>%
-               #     c("#666666", "#999999", "#BBBBBB","#666666", "#999999", "#BBBBBB"))
-             )%>%
-    #row_spec(6:8, bold = T, color = "black", background = "yellow")%>%
-    row_spec(6, bold = T,color = ifelse(c(0,tab0[6,]) >= 0,  "blue","red"))%>%
-    row_spec(7, bold = T,color = ifelse(c(0,tab0[7,]) >= 0,  "blue","red"))%>%
-               #spec_color(x=c(0,tab0[7,]), alpha=0.1, begin=0.1,  end = 0.8,
-               #                      option="C"))
-
-    row_spec(8, bold = T,color = ifelse(c(0,tab0[8,]) >= 0,  "blue","red"))%>%
-    kable_styling(latex_options = "scale_down")
-}
 
 ####################################special boxplots
 
