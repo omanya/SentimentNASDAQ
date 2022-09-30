@@ -171,4 +171,170 @@ make_knitr_table_bm<-function(mod, #fitted model
     kable_styling(latex_options = "scale_down")
 }
 
+##################make the coefficient table function-->
+
+make_knitr_table_all<-function(mod, #fitted model
+                           which_tau=c(1,2,5,10,15,18,19), #taus to put in the table
+                           caption="Coefficients and $R^2$ of the ERRE models with investor opinion proxies and different $\\tau$s.
+                           The effects of investor attention, investor perception and investor sentiment
+                           are highlighted in blue, green and orange respectively.",
+                           taus=seq(0.05,0.95,0.05),
+                           row.names=c("Constant","$turn_{i,t-1}$","$pre\\_ean_{i,t}$","$ean_{i,t}$","$post\\_ean_{i,t}$","$news_{i,t}$",
+                            "$\\log(size_{i,t})$","$btm_{i,t-1}$", "$turn_{i,t-1}*days\\_ean_{i,t}$", "$(btm_{i,t-1}<1)*post\\_ean_{i,t}$",
+                            "$supr_{i,t}$",  "$lm\\_tone_{i,t}$", "$hv\\_tone_{i,t}$", "$ml\\_tone_{i,t}$","$R^2$")
+
+){
+  library(knitr)
+  library(kableExtra)
+  #https://stackoverflow.com/questions/53341155/coloring-rows-with-kableextra-based-on-cell-values
+  #https://haozhu233.github.io/kableExtra/awesome_table_in_pdf.pdf
+
+  #coefficient table
+  options(scipen=999)
+  tab<-round(mod$coefs[,which_tau],5)
+  #pvals and stars
+  pvals<-2*(1-pt(abs(mod$coefs/mod$ses)[,which_tau], mod$mods[[1]]$df.residual))
+  stars<-matrix(rep("",nrow(mod$coefs)),dim(pvals)[1],dim(pvals)[2])
+  stars[pvals<0.001]<-"***"; stars[pvals>0.001&pvals<0.01]<-"**";  stars[pvals>0.01&pvals<0.05]<-"*"
+  #add stars
+  tab[tab>0]<-paste0(" ",tab[tab>0])
+  tab<-matrix(paste0(tab,stars,sep=""),dim(pvals)[1],dim(pvals)[2])
+  tab<-rbind(tab,round(mod$r2[which_tau],5))
+  if(any(is.na(row.names))){
+    row.names =c(names(coef(mod$mods[[1]])),"R^2")
+  }
+  rownames(tab)<-row.names
+
+  coln<-paste0("$\\hat\\beta_{",taus[which_tau],"}$")
+
+  knitr::kable(tab, align = "lllllll",
+               col.names = coln,
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )%>%kable_styling() %>%
+    row_spec(2:6, bold = T, color = "black", background = "#D2F0FA")%>%
+    row_spec(7:10, bold = T, color = "black", background = "#D2FAE4")%>%
+    row_spec(11:14, bold = T, color = "black", background = "#F9E8D2")%>%
+    row_spec(15, bold = T, color = "black", background = "#D9D6DA")
+}
+
+make_knitr_table_bm<-function(mod, #fitted model
+                           sent="lm",#sentiment measure used
+                           which_tau=c(1,2,5,10,15,18,19), #taus to put in the table
+                           caption="Coefficients and $R^2$ of the ERRE models with LM sentiment and different $\\tau$s",
+                           taus=seq(0.05,0.95,0.05),
+                           row.names=NA
+                             #c("Constant","$\\log(size_{i,t})$","$\\alpha_{i,t}$","$turn_{i,t}$",
+                              #         "$nq_{i,t}$","$btm_{i,t-1}$","$news_{i,t}$",paste0("$",sent,"\\_tone_{i,t}$"),"$R^2$")
+                           #,
+                           #id="id=\"table1\""
+){
+  library(knitr)
+  library(kableExtra)
+  #https://stackoverflow.com/questions/53341155/coloring-rows-with-kableextra-based-on-cell-values
+  #https://haozhu233.github.io/kableExtra/awesome_table_in_pdf.pdf
+
+  #coefficient table
+  options(scipen=999)
+  tab0<-round(mod$coefs[,which_tau],5)
+  #pvals and stars
+  pvals<-2*(1-pt(abs(mod$coefs/mod$ses)[,which_tau], mod$mods[[1]]$df.residual))
+  stars<-matrix(rep("",nrow(mod$coefs)),dim(pvals)[1],dim(pvals)[2])
+  stars[pvals<0.001]<-"***"; stars[pvals>0.001&pvals<0.01]<-"**";  stars[pvals>0.01&pvals<0.05]<-"*"
+  #add stars
+  tab<-tab0
+  tab[tab>0]<-paste0(" ",tab[tab>0])
+  tab<-matrix(paste0(tab,stars,sep=""),dim(pvals)[1],dim(pvals)[2])
+  tab<-rbind(tab,round(mod$r2[c(1,2,5,10,15,18,19)],5))
+  if(is.na(row.names)){
+    row.names = c(names(coef(mod$mods[[1]])),"R^2")
+  }
+  rownames(tab)<-row.names
+
+  coln<-paste0("$\\beta_{",taus[which_tau],"}$")
+
+  knitr::kable(tab, align = "lllllll", "latex",
+               col.names = coln,
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption,
+               escape = FALSE
+  )%>%kable_styling() %>%
+    row_spec(9, bold = T, color = "black",
+             background = "#DCDCDC"
+               # cut(c(0,as.numeric(tab[9,])), c(0,0.00005,0.0001,0.001,0.01,0.1,10),
+               #        #c("#F0F0F0", "#E8E8E8","#E0E0E0","#DCDCDC","#D3D3D3", "#C8C8C8")))%>%
+               #     c("#666666", "#999999", "#BBBBBB","#666666", "#999999", "#BBBBBB"))
+             )%>%
+    #row_spec(6:8, bold = T, color = "black", background = "yellow")%>%
+    row_spec(6, bold = T,color = ifelse(c(0,tab0[6,]) >= 0,  "blue","red"))%>%
+    row_spec(7, bold = T,color = ifelse(c(0,tab0[7,]) >= 0,  "blue","red"))%>%
+               #spec_color(x=c(0,tab0[7,]), alpha=0.1, begin=0.1,  end = 0.8,
+               #                      option="C"))
+
+    row_spec(8, bold = T,color = ifelse(c(0,tab0[8,]) >= 0,  "blue","red"))%>%
+    kable_styling(latex_options = "scale_down")
+}
+
+####################################special boxplots
+
+myspec_boxplot<-function (x, width = 200, height = 50, res = 300, add_label = FALSE,
+          label_digits = 2, same_lim = TRUE, lim = NULL, xaxt = "n",
+          yaxt = "n", ann = FALSE, col = "lightgray", border = NULL,
+          boxlty = 0, medcol = "red", medlwd = 1, dir = if (kableExtra:::is_latex()) rmd_files_dir() else tempdir(),
+          file = NULL, file_type = if (kableExtra:::is_latex()) "pdf" else svglite::svglite
+          ){
+  if (is.list(x)) {
+    if (same_lim & is.null(lim)) {
+      lim <- base::range(unlist(x), na.rm = TRUE)
+    }
+    dots <- kableExtra:::listify_args(x, width, height, res, add_label,
+                         label_digits, lim, xaxt, yaxt, ann, col, border,outline=FALSE,
+                         dir, file, file_type, lengths = c(1, length(x)))
+    return(do.call(Map, c(list(f = spec_boxplot), dots)))
+  }
+  if (is.null(x))
+    return(NULL)
+  if (is.null(lim)) {
+    lim <- base::range(x, na.rm = TRUE)
+    lim[1] <- lim[1] - (lim[2] - lim[1])/10
+    lim[2] <- (lim[2] - lim[1])/10 + lim[2]
+  }
+  if (!dir.exists(dir)) {
+    dir.create(dir)
+  }
+  file_ext <- dev_chr(file_type)
+  if (is.null(file)) {
+    file <- normalizePath(tempfile(pattern = "boxplot_",
+                                   tmpdir = dir, fileext = paste0(".", file_ext)),
+                          winslash = "/", mustWork = FALSE)
+  }
+  graphics_dev(filename = file, dev = file_type, width = width,
+               height = height, res = res, bg = "transparent")
+  curdev <- grDevices::dev.cur()
+  on.exit(grDevices::dev.off(curdev), add = TRUE)
+  graphics::par(mar = c(0, 0, 0, 0))
+  graphics::boxplot(x, horizontal = TRUE, frame = FALSE,
+                      bty = "n", outline=FALSE, axes = FALSE,
+                      outcex = 0.2)
+
+
+    if (add_label) {
+      x_median <- round(median(x, na.rm = T), label_digits)
+      x_min <- round(min(x, na.rm = T), label_digits)
+      x_max <- round(max(x, na.rm = T), label_digits)
+      graphics::text(x_median, y = 1.4, labels = x_median,
+                     cex = 0.5)
+      graphics::text(x_min, y = 0.6, labels = x_min, cex = 0.5)
+      graphics::text(x_max, y = 0.6, labels = x_max, cex = 0.5)
+    }
+
+  grDevices::dev.off(curdev)
+  out <- make_inline_plot(file, file_ext, file_type, width,
+                          height, res, del = TRUE)
+  return(out)
+}
 
