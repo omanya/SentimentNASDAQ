@@ -426,7 +426,6 @@ mod0<-fit_eeffects(formul=formul,dat=data[ind_use,])
 
 ```{r table1,echo=FALSE}
 
-source("myfuns1.R")
 make_knitr_table_all(mod=mod0)
 
 ```
