@@ -44,14 +44,14 @@ knitr::write_bib(c("knitr", "rmarkdown", "sandwich","kableExtra"), width = 60,fi
 
 The effects of public information flow as news arrival and investor sentiment on stock returns and the question whether they make up good predictors of the later have captured attention of many researches. However the results are somewhat fragmented and debatable. For instance, @Antweiler2004 find that the number and extent of text messages influences stock volatility but not returns.  @DAS2007 observe that the message volume (regarded as optimistic sentiment) is positively correlated with stock volatility but negatively correlated with stock returns. @HAGENAU2013 and @NGUYEN2015 among others are able to significantly improve their return forecast by using sentiment from news or social media. @SHANG2014 find a significant effect of sentiment only related to the negative announcements. @KIM2014 find no evidence for predictive power of sentiment neither on returns nor on volatility or trading volume. Recently, @AUDRINO2020 and @FANG2021 again report an improvement in volatility forecasts on using sentiment from news and social media.
 
-@Su2021 distinguish three channels, how information flow influence asset returns: *investor perception* (expectations, risk perception and individual believes), captured by financial variables, *investor attention*  and *investor sentiment* (optimistic or pessimistic) usually specified as polarity of news and social media messages content. 
+@Su2021 distinguish three channels, how information flow influence asset returns: *investor perception* (expectations, risk perception and individual believes), captured by financial variables, event-related *investor attention*  and *investor sentiment* usually specified as polarity of news and social media messages content. 
 
 In this paper we analyse the impact of the three information flow channels on the distribution of asset daily returns. Thereby we indicate *investor attention* using indicators of days around earnings announcements, news arrivals and share turnover.  *Investor perception* is captured by book-to-market ratios, size and earning surprise. Dictionary-based or machine learning polarity assessment of firm-specific news content measures are alternatively used as proxies of *investor sentiment*. OUr choice of the proxies is based on empirical evidence found in the literature, which we provide below.
 
-Two important issues arise when analysing the effects above. First, whereas some of the indicators as earnings announecements and news arrivals can be directly observed, investor sentiment is a latent variable and has to be inferred from news and social media. The later holds also for investor perception channel. Second, although most empirical findings confirm significant effects, there is no consensus on which parameters of the conditional return distribution are affected (expectation, variance or higher moments). 
+Two important issues arise when analysing the effects above. First, whereas some of the indicators as earnings announcements and news arrivals can be directly observed, investor sentiment is a latent variable and has to be inferred from news and social media. The later holds also for investor perception channel. Second, although most empirical findings confirm significant effects, there is no consensus on which parameters of the conditional return distribution are affected (expectation, variance or higher moments). 
 <!--whether the conditional expectation of return itself or its conditional variance or other distributional features are effected and what is the direction of the effect. -->
 
-To model the impact on the conditional variance, typically GARCH-type models are employed. @CAMPBELL1992 proposes such a model which incorporates an asymmetric news-about-dividends impact on return volatility. Further focusing on this effect and using broad firm specific news arrivals as a proxy for information flow @KALEV2004 report significant effects on intraday and daily level. The authors write "when public news is released, market activity intensifies as a result of belief revisions caused by the divergence of opinions among traders". @Maheu2004 also find empirical evidence for an asymmetric effect of positive and negative news on volatility jumps. The authors infer the positiveness or negativeness using the earnings surprises, without any textual analysis of news content. Thereby they assume, that a positive return surprise indicates positive news and vice versa. According to our empirical findings, this is not always the case. Specifically, for the lower tail of return distribution, also positive news can have a negative impact. @Cao2002 argue, that not only second but also third moments of return distribution are effected by information arrival due to inert "sidelined" investors. 
+To model the impact on the conditional variance, typically GARCH-type models are employed. @CAMPBELL1992 proposes such a model which incorporates an asymmetric news-about-dividends impact on return volatility. Further focusing on this effect and using broad firm specific news arrivals as a proxy for information flow @KALEV2004 report significant effects on intraday and daily level. The authors write "when public news is released, market activity intensifies as a result of belief revisions caused by the divergence of opinions among traders". @Maheu2004 also find empirical evidence for an asymmetric effect of positive and negative news on volatility jumps. The authors infer the positiveness or negativeness using the earnings surprises without any textual analysis of news content. Thereby they assume, that a positive return surprise indicates positive news and vice versa. According to our empirical findings, this is not always the case. Specifically, for the lower tail of return distribution, also positive news can have a negative impact. @Cao2002 argue, that not only second but also third moments of return distribution are effected by information arrival due to inert "sidelined" investors. 
 
 <!--To quantify the effect on the conditional return expectation-->
 @ENGELBERG2018 consider return anomalies and find a sign-changing asymmetric effect on information days. The sign depends on  an anomaly-based classification of the respective stock as anomaly-short or anomaly-long. Whereas returns of the later profit from new arrivals, the returns of the anomaly-short stocks fall on news arrival days. That is, the effect of news arrivals can be anticipated by at least some investors and used for developing a trading strategy depending on their believes and the state of the world. This hypothesis is supported also in our empirical results where news arrivals have negative impact on lower tail of return distribution even if the content is tentatively positive.
@@ -62,13 +62,20 @@ Further, @BERKMAN2009 argues that varying degree in differences of opinions on d
 
 Investor attention and polarity of news content present only one facet of information flow important for stock pricing. Financial indicators which reflect investor expectations can be good return predictors.  @FAMA1992,  @KOTHARI1997  and @PONTIFF1998 point out that book-to-market ratio enhances better predictability of returns as an indicator of future earnings. @Billings2001 find that the lag component in BTM ratio related to past price changes is useful in predicting returns. The authors also discover its strong association with earnings forecasts. In our analysis book-to-market (btm)  ratio reflecting investor expectations builds up an indicator of investor perception. We also control for the long known size effect by including $\log(Size)$ in our analysis as an indicator of investor risk perception (@FRIEND1988).
 
-Quantiles (@Koenker1978) of the return, $q_{\tau}(r_{i,t})$, for a a range of $\tau$-values in $(0,1)$ are capable of representing the whole return distribution without explicit distributional assumtions. Thus, by means of quantile regression distributional effects of investor opinions can be estimated. @NI2015, @Ma2018 and @ALNASSERI2021 use quantile regression to address the second raised issue: which distributional parameters of the return are effected. The authors find different effects for different quantile levels and point out that, overall, extreme markets are driven by investor sentiment.
+In the current paper we follow the classification of @Su2021 and incorporate all three associated channels of information flow influence on asset returns. That is, we include proxies for investor perception, investor attention, and investor sentiment in our analysis and assess the effects based on this structure, which makes our approach stand out from the previous research. 
 
-Instead of using $\tau$-quantiles for representing the distribution of returns, an alternative measure $\tau$-expectiles introduced in @Newey1987 can be employed. The $\tau$-expectile is the real number, such that the $\tau$-proportion of the expected distance to it lies below and the $(1-\tau)$-proportion lies above it. As quantiles generalize the concept of the median, expectiles generalize the concept of the mean. Therefore, expectile regression for a range of $\tau$-values in $(0,1)$ naturally generalizes mean regression and is capable of capturing the effects on the whole distribution of returns in our case.
+Moreover, we conduct the effect analysis of information flow channels on the whole distribution of asset returns representing the later without imposing any distributional assumptions by a set of tail indices. 
 
-In this paper, we use expectile regression with random effects  (@BARRY2016) to analyse panel data of NASDAQ excess returns over the period April 2015  to August 2019. Our expectile regression approach with random effects accounts for panel data structure, covers the whole distribution of returns breaking it down to different expectile levels (similar to quantile regression), but, as opposed to quantile regression, covers the mean regression as a special case of $\tau=0.5$ and allows simple and efficient estimation and inference on the obtained parameters.
+A natural choice of such tail indices are quantiles (@Koenker1978) of the return, $q_{\tau}(r_{i,t})$, for a a range of $\tau$-values in $(0,1)$ capable of representing the whole return distribution without explicit distributional assumtions. By means of quantile regression distributional effects of investor opinions can be estimated. @NI2015, @Ma2018 and @ALNASSERI2021 use quantile regression to address the second raised issue: which distributional parameters of the return are effected. The authors find different effects for different quantile levels and point out that, overall, extreme markets are driven by investor sentiment.
 
-Using coefficient standard errors robust to serial and cross-sectional correlation, we confirm significant positive effect of btm ratio and a significant negative effect of news arrivals *on lower tail of return distribution* even if the polarity of the news is positive. Our explanation for the effects connects to a trading strategy "buy on rumor, sell news". That is, some investors tend to buy equities with low returns when they expect their growth (the 'rumor' part)  (when they are believed to be underpriced) and sell low return stocks to ride on the hype of positive news arrivals. 
+Instead of using $\tau$-quantiles for representing the distribution of returns, an alternative measure $\tau$-expectiles introduced in @Newey1987 can be employed. The $\tau$-expectile is the real number, such that the $\tau$-proportion of the expected distance to it lies below and the $(1-\tau)$-proportion lies above it. As quantiles generalize the concept of the median, expectiles generalize the concept of the mean. Therefore, the expectile regression for a range of $\tau$-values in $(0,1)$ naturally generalizes the mean regression and is capable of capturing the effects on the whole distribution of returns in our case. This fact makes our analysis comparable with the previous findings based on the mean regression for $\tau=0.5$ on one hand and capable of capturing distributional effects for $\tau\in (0,1)\setminus\{0.5\}$ on the other.
+
+<!--The contribution of our paper is two-fold. First, we use expectile regression framework, which naturally generalizes
+-->
+
+In this paper, we use expectile regression (@Newey1987) to analyse NASDAQ excess returns with the associated covariates over the period April 2015  to August 2019. Our expectile regression approach allows to study heterogeneous effects over the whole distribution of returns breaking it down to different expectile levels (similar to quantile regression), but, as opposed to quantile regression, covers the mean regression as a special case of $\tau=0.5$ and facilitates simple and efficient estimation and inference on the obtained parameters (@waltrup2015 on the efficiency of expectles, @Barry2018 for inference).
+
+Using coefficient standard errors robust to serial and cross-sectional correlation, we confirm significant positive effect of the day before earnings announcements and a significant negative effect of news arrivals *on lower tail of return distribution* even if the polarity of the news is positive. Our explanation for the effects connects to a trading strategy "buy on rumor, sell news". That is, some investors tend to buy equities with low returns when they expect their growth (the 'rumor' part)  (when they are believed to be underpriced) and sell low return stocks to ride on the hype of positive news arrivals. 
 
 Further advantage of our expectile-based approach lies in risk management perspective. Well-known connection of expectiles to expected shortfall (@Taylor2008) makes our investigation of the factors impacting th expectiles of the returns potentially useful for further risk management insights.
 
@@ -77,9 +84,9 @@ The rest of the paper is organized as follows. First, we introduce our data and 
 
 # Data 
 
-We use excess returns of NASDAQ stocks and the associated news articles in the period April 2015 - August 2019 from Bloomberg (?)... How we computed excess returns?
+We use data for NASDAQ stocks in the period April 2015 - August 2019 originated from Bloomberg. Our dependend variable is the excess return of NASDAQ stocks in the mentioned period, computed as...  {\color{red}(How we computed excess returns?)}. The associated data on size, btm ratios, share turnover, and the associated new articles build up the basis for explanatory variables.
 
-We combine the data with the records on earnings announcements from https://www.kaggle.com/datasets/tsaustin/us-historical-stock-prices-with-earnings-data (accessed on 21.September 2022).
+We combine this data with the records on earnings announcements from https://www.kaggle.com/datasets/tsaustin/us-historical-stock-prices-with-earnings-data (accessed on 21.September 2022) and sector classification from NASDAQ website (https://www.nasdaq.com/market-activity/stocks/screener, accessed on 10. September 2022).
 
 
 ```{r,echo=FALSE}
@@ -154,7 +161,7 @@ rm(ret1)
 (assumption: the intraday returns do not influence news articles of the same day)
 
 
-```{r}
+```{r,echo=FALSE}
 #combine with earnings announcements
 ean<-read.csv("./stocks_latest/earnings_latest.csv")
 ean$ean<-1 # indicator of rearnings
@@ -193,35 +200,30 @@ for( i in 1: length(tickers)){
 
 ```
 
+```{r,echo=FALSE}
+sectors<-read.csv2("nasdaq_screener.csv")
+data<-merge(data,sectors[,c("Symbol","Sector")], by.x=c("Ticker"),by.y=c("Symbol"),all.x=T)
 
-<!--## The 'news' part
-
-Many authors study news impact on returns and discover significant connection of negative words and market performance, see @Barberis2005, @TETLOCK2007 and @UHL2014 among others.  @SHANG2014 for instance find a significant effect of only related to the negative announcements...
-
-@YU2021  estimate news impact quantified by credibility measures, topic arousal and some emotional indicators  (as questions and exclamations). Interestingly, they get coefficients of different sign for different periods and financial assets.
-
-We focus on credible and broadly accessible announcement channel: NASDAQ news articles. We compute news sentiment assessments using the LM and HV dictionary as well as machine learning sentiment...
-We simultaneously consider positive and negative sentiment, as @FANG2021 show that both effect the volatility.
+```
 
 
-@Antweiler2004 find that the number and extent of text messages influences stock volatility but not returns.  @DAS2007 observe that the
-message volume (regarded as optimistic sentiment) is positively correlated with stock volatility but negatively correlated with stock returns. See more references in @KEARNEY2014. @RENAULT2017 provides an evidence for sentiment-driven intraday trading. @HAGENAU2013 and Nguyen et al 2015 @NGUYEN2015 among others are able to significantly improve their return forecast by using sentiment from news or social media. On the other hand, @KIM2014 find no evidence for predictive power of sentiment neither on returns nor on volatility or trading volume. Recently, @AUDRINO2020 and @FANG2021 again report an improvement in volatility forecasts on using sentiment from news and social media. These controversial findings lead us to a hypothesis, that the effects maybe dependent on a hidden "state of the world" for a particular return. This is confirmed in the results of @Ma2018 where the quantiles of returns are effected rather than the mean. It is also supported by the findings of @FRANKEL2022, where the nonparametric sentiment methods (like random forest) outperform the parametric ones.
+```{r, echo=FALSE}
+source("myfuns.R")
+#load("data.RData")
+```
 
-from @FANG2021:
-" the investors' optimistic sentiments are assumed to more significantly raise
-the current stock volatility than their pessimistic sentiments... the positive effects of investor sentiments on return volatility are expected to decrease in the subsequent period(s)"
 
--->
+From the available data and based on the previous findings in the literature, we construct proxies for the three channels of information flow: investor attention, investor sentiment and investor perception described in the following.
 
 ## Proxies for investor attention
 
 As proxies for investor attention particular stocks we employ 
 
 - share turnover of the previous period $turn_{i,t-1}$, 
-- indicator of news arrival at $t$ $news_{i,t}$ and earnings announcements $ean_{i,t}$ as well 
+- indicator of news arrival at $t$ $news_{i,t}$ and earnings announcements $ean_{i,t}$ as well as
 - indicators of days before and after earnings announcements, $pre\_ean_{i,t}$ and  $post\_ean_{i,t}$. 
 
-The last two together indicate a three-day period around the earnings announcements as in @BERKMAN2009. Share turnover is a known indicator of attention, as in @Loh2010.
+The last two together indicate a three-day period around the earnings announcements as in @BERKMAN2009 and the time of news releases. Share turnover is a known indicator of attention, see e.g. @Loh2010.
 
 ## Proxies for investor sentiment
 
@@ -230,18 +232,18 @@ As proxies for investor sentiment we use:
 - earnings surprise  $surp_{i,t}$ computed as the difference of analysts forecast and the earnings announced;
 - dictionary-based polarity assessment of firm specific news content with Loughran \& McDonald (LM) word list, $lm_{i,t}$;
 - dictionary-based polarity assessment of firm specific news content with Harvard (HV) word list, $hv_{i,t}$;
-- machine learning assessment of news polarity with FinBert and random forest model. The resulting polarity is then the out-of-sample forecast of the machine learning (ML) model, $ml_{i,t}$.
+- machine learning assessment of news polarity with FinBert and random forest model. The resulting polarity is then the out-of-sample forecast of the machine learning (ML) model, $ml_{i,t}$. {\color{red}(...Here description of the sentiment extraction)}
 
 We normalize the last three sentiment measures to the interval $[-1,1]$.
 
-Earnings surprises were used by @Maheu2004 to proxy investor sentiment. For dictionary based methods see e.g. @JEGADEESH2013. @FANG2021 uses machine learning methods to infer textual sentiment.
+Earnings surprises were used by @Maheu2004 to proxy investor sentiment. For dictionary based methods see e.g. @JEGADEESH2013. @FANG2021 successfully uses machine learning methods (random forest) to infer textual sentiment.
 
 ## Proxies for investor perception
 
 As proxies for investor perception we use firm specific 
 
 - size and btm ratios as well as 
-- the interaction term between small btm ratio and post earning day and 
+- the interaction term between small btm ratio and the post earnings announcements day as well as 
 - turnover around earnings announcements.
  
 According to @FRIEND1988 the well-known size effect reflects a risk effect and enters therefore our proxy for risk perception.
@@ -260,100 +262,175 @@ According to @BERKMAN2009, shares turnover around earnings announcements can be 
 
 ## Empirical data summary
 
-We provide a summary of data for each variable separately and per return expectile intervals.
-
-```{r}
-vars<-c("r_.ab.","log.SIZE.","BTM","TURNOVER")#"ean","surprise","news","TURNOVER","LM.TONE","HIV4.TONE","ML.TONE")
-summary(data[,vars])
-```
-
-```{r}
-vars_c<-c("surprise","LM.TONE","HIV4.TONE","ML.TONE")
-summary(data[,vars_c[1],drop=F][data$ean>0,])
-```
-
-```{r}
-summary(data[,vars_c[2:4]][data$news>0,])
-```
-
+We provide a standard summary of data for each variable in Table \@ref(tab:table01) and Table \@ref(tab:table02), a time period and sector wise expectile summaries of the return distributions in Table \@ref(tab:table03) and Table \@ref(tab:table04), and per-expectile summary of explanatory variables to give the reader an overview of the data structure in Table \@ref(tab:table05).
 
 ```{r, echo=FALSE}
-source("myfuns.R")
+vars<-c("r_.ab.","log.SIZE.","BTM","TURNOVER")#"ean","surprise","news","TURNOVER","LM.TONE","HIV4.TONE","ML.TONE")
+#summary(data[,vars])
+
+library(moments)
+mysummary<-function(x){
+  x<-x[!is.na(x)]
+  return(c(min(x),max(x),mean(x),sd(x),skewness(x)))#, kurtosis(x)))
+}
 ```
 
-In the following per-expectile distributional summary, the scale of the box plots is kept the same in the entire column for comparison purposes.
+```{r table01, echo=FALSE}
+library(knitr)
+library(kableExtra)
+options(scipen=999)
+tab<-apply(data[,vars], 2,mysummary)
+rownames(tab)<-c("min","max","mean","sd","skewness")#,"kurtosis")
+colnames(tab)<-c("$r_{\\cdot,\\cdot}$","$\\log(size_{\\cdot,\\cdot})$","$btm_{\\cdot,\\cdot}$", "$turn_{\\cdot,\\cdot}$")
+caption<-"Summary statistics for the variables: daily firm excess returns $r$, the logarithm of firm size $\\log(size)$, firm btm ratio $btm$, and shares turnover $turn$."
 
-```{r}
+ knitr::kable(tab, align = "llll",
+               col.names = colnames(tab),
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )
+```
+
+
+```{r table02,echo=FALSE}
+vars_c<-c("surprise","LM.TONE","HIV4.TONE","ML.TONE")
+tab<-cbind(apply(data[data$ean>0,vars_c[1],drop=F]*100,2,mysummary),apply(data[data$news>0,vars_c[2:4]],2,mysummary))
+rownames(tab)<-c("min","max","mean","sd","skewness")#,"kurtosis")
+colnames(tab)<-c("$supr$",  "$lm\\_tone$", "$hv\\_tone$", "$ml\\_tone$")
+caption<-"Summary statistics for the variables: earning surprise $supr$ only for the days of earnings announecements, news sentiment based on LM dictionary denoted as $lm\\_tone$, on HV dictionary denoted as $hv\\_tone$, and news sentiment based on machine learning denoted as $ml\\_tone$ only for the days of news releases."
+
+ knitr::kable(tab, align = "llll",
+               col.names = colnames(tab),
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )
+```
+In Table \@ref(tab:table03) empirical return expectiles $\hat e_{\tau}$ for $\tau = 0.05,0.25,0.5,0.75,$ and $0.95$ and different sub periods of the considered time span are reported. We observe that the tail indices remain approximately the same over time.
+
+```{r table03, echo=FALSE}
 library(expectreg,quietly =T,verbose=F)
 taus=c(0.05,0.25,0.5,0.75,0.95)
 
+expectile_taus<-function(x,taus){
+  return(sapply(taus,FUN=expectile,x=x))
+}
+
 #expectiles
-exps<-sapply(taus,FUN=expectile,x=data$r_.ab.)
+tab<-rbind(expectile_taus(data$r_.ab.,taus),
+           expectile_taus(data$r_.ab[data$Year%in% c("2015","2016")],taus),
+           expectile_taus(data$r_.ab[data$Year%in% c("2017", "2018", "2019")],taus)                                       )
 
-lbls<-c(paste("$r_{i,t}\\leq e_{",taus[1],"}$"),
-        paste("$e_{",taus[1:(length(taus)-1)],"}\\leq r_{i,t}\\leq e_{",taus[-1],"}$"),paste("$r_{i,t}\\geq e_{",taus[length(taus)],"}$"))
 
+
+rownames(tab)<-c("2015-2019",  "2015-2016", "2017-2019")
+colnames(tab)<-paste0("$\\hat e_{",taus,"}$")
+caption<-"Empirical expectiles for the excess returns for the whole time span 2015-2019, for the first sub period 2015-2016 and for the second sub period 2017-2019."
+
+ knitr::kable(tab, align = "lll",
+               col.names = colnames(tab),
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )
+```
+In Table \@ref(tab:table04) we report the empirical return expectiles $\hat e_{\tau}$ for $\tau = 0.05,0.25,0.5,0.75,$ and $0.95$ sector wise.
+
+
+
+```{r table04, echo=FALSE}
+
+#expectiles
+exps<-expectile(data$r_.ab.,probs=taus)
+
+tab<-cbind(aggregate(r_.ab.~Sector,data=data,FUN=expectile,probs=taus[1]),
+           aggregate(r_.ab.~Sector,data=data,FUN=expectile,probs=taus[2])[,2],
+aggregate(r_.ab.~Sector,data=data,FUN=expectile,probs=taus[3])[,2],
+aggregate(r_.ab.~Sector,data=data,FUN=expectile,probs=taus[4])[,2],
+aggregate(r_.ab.~Sector,data=data,FUN=expectile,probs=taus[5])[,2])
+
+
+
+colnames(tab)[-1]<-paste0("$\\hat e_{",taus,"}$")
+caption<-"Empirical expectiles for the excess returns for the whole time span 2015-2019 for each of the ten sectors"
+
+ knitr::kable(tab, align = "lll",
+               col.names = colnames(tab),
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )
+```
+Here we observe substantial variation of empirical expectiles between sectors. Based on this observation, we include sector and firm dummies to account for the posible individual variability and the variability across sectors.
+
+In the following Table \@ref(tab:table05) per-expectile distributional summary is displayed. The summary statistics for the explanatory variables is conditioned on excess returns belonging to a specific empirical expectile interval: $[\min(r), \hat e_{0.05})$, $[\hat e_{0.05}, \hat e_{0.25} )$,  $[\hat e_{0.25}, \hat e_{0.5})$,  $[\hat e_{0.5}, \hat e_{0.75})$, $[\hat e_{0.75}, \hat e_{0.95})$, and $[\hat e_{0.95}, \max(r)]$. We report the mean and the standard deviation in parenthesis for the variables.
+
+```{r table05,echo=FALSE}
+
+lbls<-c(paste("$r\\leq \\hat e_{",taus[1],"}$"),
+        paste("$\\hat e_{",taus[1:(length(taus)-1)],"}\\leq r\\leq \\hat e_{",taus[-1],"}$"),paste("$r\\geq \\hat e_{",taus[length(taus)],"}$"))
 
 data$crab<-cut(data$r_.ab.,breaks=c(-Inf,exps,+Inf),labels=lbls)
 
-
-tab<-cbind(aggregate(turnover1~crab,data=data,FUN=summary),
-           aggregate(log.SIZE.~crab,data=data,FUN=summary),
-           aggregate(btm1~crab,data=data,FUN=summary))
-
-library(kableExtra)
-turn_list<-split(data$turnover1,data$crab)
-btm_list<-split(data$btm1,data$crab)
-size_list<-split(data$log.SIZE.,data$crab)
-ean_list<-lapply(split(data$ean,data$crab),function(x){sum(x,na.rm=T)/393})
-news_list<-lapply(split(data[,c("news")],data$crab),function(x){sum(x,na.rm=T)/6150})
-
-lmtone_list<-split(data$LM.TONE[data$news==1],data$crab[data$news==1])
-hvtone_list<-split(data$HIV4.TONE[data$news==1],data$crab[data$news==1])
-mltone_list<-split(data$ML.TONE[data$news==1],data$crab[data$news==1])
-surp_list<-split(data$surprise[data$ean==1],data$crab[data$ean==1])
+mysummary2<-function(x){
+  return(paste0(round(mean(x),4)," (",round(sd(x),4),") "))
+}
 
 
-inline_plot<-data.frame(return_expectile= levels(data$crab), turn = "", btm = "", size = "", 
-                        lm_tone = "", hv_tone = "",ml_tone="", news="", earnings="")
+tab<-cbind(aggregate(turnover1~crab,data=data,FUN=mysummary2)[,2],
+           aggregate(log.SIZE.~crab,data=data,FUN=mysummary2)[,2],
+           aggregate(btm1~crab,data=data,FUN=mysummary2)[,2],
+           aggregate(news~crab,data=data,FUN=mysummary2)[,2],
+           aggregate(ean~crab,data=data,FUN=mysummary2)[,2]
+           )
 
-inline_plot%>%
-  kbl(booktabs = TRUE) %>%
-  kable_paper(full_width = FALSE) %>%
-  column_spec(2, image = myspec_boxplot(turn_list)) %>%
-  column_spec(3, image = myspec_boxplot(btm_list,lim=c(0,3))) %>%
-  column_spec(4, image = myspec_boxplot(size_list)) %>%
-  column_spec(5, image = myspec_boxplot(lmtone_list,lim=c(-1.1,1.1)))%>%
-  column_spec(6, image = myspec_boxplot(hvtone_list,lim=c(-0.6,0.9))) %>%
-  column_spec(7, image = myspec_boxplot(mltone_list,lim=c(-0.1,0.1))) %>%
-  # column_spec(6, image = myspec_boxplot(hvtone_list,lim=c(-0.6,0.9)))
-  column_spec(8, image = spec_plot(news_list,same_lim=TRUE,type="h",lim=c(0,1),col="gray66")) %>%
-  column_spec(9, image = spec_plot(ean_list,same_lim=TRUE,type="h",lim=c(0,1),col="gray66"))
-  
+colnames(tab)<-c("$turn$","$\\log(size)$", "$btm$","$news$", "$ean$")
+caption<-"Per-expectile means (standard deviations) of the variables shares turnover $turn$, logarithm of size $\\log(size)$, btm ratios $btm$, indicator of news arrivals $news$, and indicator of earnings announcements $ean$."
+rownames(tab)<-lbls
+
+ knitr::kable(tab, align = "lll",
+               col.names = colnames(tab),
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )
+
+```
+Interestingly, the extreme return states $r\leq \hat e_{0.05}$ and $r\geq \hat e_{0.95}$ are associated with substantially higher mean turnover and earnings announcements rate, slightly lower mean size and with somewhat higher mean btm ratios and news arrivals rate.
+
+```{r, echo=FALSE}
+save(data, file="data.RData")
 ```
 
+Based on the data description above, one expects possibly different effects of the considered covariates on the location, scale and shape of the conditional return distribution. As in the summaries above, it is possible to represent the conditional return distribution through its conditional expectiles. A practical estimator of the heterogeneous effects over the return distribution can be obtained by expectile regression.
 
-# Expectile regression with random effects (ERRE)
+
+# Expectile panel data regression 
+
+In this section we review the general set up of our panel data model and its generalization to expectile regression (ER) and provide the assumptions underlying our analysis.
 
 ## General model definition
 
-To estimate distributional effects of news arrivals and news sentiment we use expectile regression with random effects for the panel data (https://hal.archives-ouvertes.fr/hal-01421752/document).
+Consider a random effects model for the excess return ($r_{i,t}$) of firm $i$ at time $t$ with $i=1,\ldots,n$ and $t=1,\ldots, T$:
+\[r_{i,t} = x_{i,t}^\top\beta + z_{i}^\top\gamma + \alpha_i + v_{i,t}\]
 
-Consider a standard panel data model for the excess returns ($r_{i,t}$) of $n$ stocks over $t=1,\ldots, T$ and $i=1,\ldots,n$:
-\[r_{i,t} = x_{i,t}^\top\beta + u_i + v_{i,t}\]
+with response $r_{i,t}$ being the excess return of stock $i$ at time $t$ computed as specified in Section "Data". $x_{i,t}$ a vector of $p$ time varying predictors, and $z_i$ a vector of time-invariant covariates (including the constant) for the stock $i$ known at time $t$. $\alpha_i$ are individual specific effects uncorrelated with the predictors, $v_{i,t}$ is an error term uncorrelated with $x_{i,t}$ as well.
 
-with response $r_{i,t}$ being the excess return of stock $i$ at time $t$ computed as specified in Section "Data".
-and $x_{i,t}$ a vector of $p$ predictors (including the constant) for the stock $i$ known at time $t$. Here $u_i$ is unobserved random individual effect uncorrelated with $x_{i,t}$ and $v_{i,t}$ is an error term uncorrelated with $x_{i,t}$ as well.
+The model can be rewritten as:
 
-Let $Z$ denote the stock indicator matrix, then, in matrix notation the random effects model becomes:
+\[r_{i,t} = \beta_0 + x_{i,t}^\top\beta + z_{i}^\top\gamma+u_{i,t},\]
 
-\[R = X\beta + Zu + v = X\beta +\varepsilon\]
+where $u_{i,t} = \alpha_i + v_{it}$.  
 
-$\beta$ can be estimated via least squares. A general form of variance-covariance is computed to account for the correlation in residuals.
+The conditional expectile regression @Newey1987 aims at finding the conditional expectile (given the covariates $x_{i,t}$ and $z_i$):
 
-The conditional expectile regression with random effects as introduced in @BARRY2016 aims at finding the conditional expectile (given $x_{i,t}$):
-
-\[e_\tau(r_{i,t}) = x_{i,t}^\top \beta_\tau, i=1,\ldots, n, t=1,\ldots T,\]
+\[e_\tau(r_{i,t}|x_{i,t},z_i) = x_{i,t}^\top \beta_\tau + z_{i}^\top \gamma_\tau, i=1,\ldots, n, t=1,\ldots T,\]
 
 where $\tau\in (0,1)$ is the expectile level.
 
@@ -380,18 +457,16 @@ The variances-covariances matrix of the estimator can be estimated via:
 
 and \[\hat \Sigma = X^\top\hat W\hat\varepsilon\hat \varepsilon^\top\hat WX/n\].
 
-We compute robust standard errors for the ERRE-coefficients with R-Package *sandwich*.
+We compute robust standard errors for the ER-coefficients with R-Package *sandwich* assuming cross-sectional error dependence within sectors and serial dependence within the individual stocks.
 
-
-
-## ERRE with proxies of investor opinion
+## ER with proxies of investor opinion
 
 Our basis model specification is:
 
 \[\begin{align}
 e_\tau(r_{i,t}) = &\beta_{0,\tau} + \beta_{1,\tau}\cdot turn_{i,t-1}+\beta_{2,\tau}\cdot pre\_ean_{i,t} + \beta_{3,\tau}\cdot ean_{i,t} + \beta_{4,\tau}\cdot news_{i,t} \\
 &+\beta_{5,\tau}\cdot \log(size_{i,t}) + \beta_{6,\tau} \cdot btm_{i,t-1} + \beta_{7,\tau}\cdot days\_ean_{i,t}\cdot turn_{i,t-1}+ \beta_{8,\tau}\cdot (btm_{i,t-1}<1)\cdot ean_{i,t}\\
-& + \beta_{9,\tau}\cdot surp_{i,t-1} + \beta_{10,\tau}\cdot lm\_tone_{i,t} + \beta_{11,\tau}\cdot hv\_tone_{i,t} + \beta_{12,\tau}\cdot ml\_tone_{i,t}(\#eq:mod0)
+& + \beta_{9,\tau}\cdot surp_{i,t-1} + \beta_{10,\tau}\cdot lm\_tone_{i,t} + \beta_{11,\tau}\cdot hv\_tone_{i,t} + \beta_{12,\tau}\cdot ml\_tone_{i,t} + \gamma_{1,\tau}^{\top}\cdot sector_{i}+ \gamma_{2,\tau}^\top\cdot firm_{i}(\#eq:mod0)
 \end{align}\]
 
  with
@@ -419,7 +494,9 @@ e_\tau(r_{i,t}) = &\beta_{0,\tau} + \beta_{1,\tau}\cdot turn_{i,t-1}+\beta_{2,\t
  - $lm\_tone_{i,t}$ and $hv\_tone_{i,t}$ are news polarity or sentiment measures obtained by using LM and HV dictionary respectively. These measures are computed as $\frac{\#\text{ of positive words} - \# \text{ of negative words}}{\#\text{ of positive words}+\# \text{ of negative words}}$ using the corresponding dictionary.
  
  - $ml\_tone_{i,t}$ out-of-sample return forecast obtained using random forest with news content as explanatory variable.
-
+ 
+ - $sector_{i}$ and $firm_{i}$ are the associated sector/firm dummy variables of the form $(0,0,\ldots,0,1,0,\ldots,0)$.
+ 
 
 Within our model, we control for the effects of investor attention ($\beta_1$ to $\beta_4$), for the effects of investor perception ($\beta_5$ to $\beta_8$), as well as the effects of investor sentiment ($\beta_{9}$ to $\beta_{12}$).
  
@@ -429,20 +506,22 @@ We fit the models as specified in Equation \@ref(eq:mod0) for $\tau\in\{0.05,0.1
 #I(turnover*news) effect of different opinions of 
 #I(size*news) effect difference for small and large firms
 ind_use<-which(!is.na(data$btm1)&!data$Year%in%c("")&!as.character(data$Ticker)%in%c(""))#,AGI","AMD","CHK","TWTR"))
-formul<-as.formula("r_.ab.~ turnover1 +pre_ean+ean+post_ean+news+log(Size)+ btm1  + I(turnover1*days_ean)+ I((btm1<1)*post_ean) +I(surprise*100) + LM.TONE + HIV4.TONE + ML.TONE")
+formul<-as.formula("r_.ab.~ turnover1 +pre_ean+ean+post_ean+news+log(Size)+ btm1  + I(turnover1*days_ean)+ I((btm1<1)*post_ean) +I(surprise*100) + LM.TONE + HIV4.TONE + ML.TONE+ Sector+Ticker")
 
-mod0<-fit_eeffects(formul=formul,dat=data[ind_use,])
-#summary(mod0$mods[[10]])
+taus_mod<-c(0.005,0.01,seq(0.05,0.95,by=0.05),0.99,0.995)
+mod0<-fit_eeffects(formul=formul,dat=data[ind_use,],taus=taus_mod)
+#save(mod0, file="mod0.RData")
 ```
 
 
 ```{r table1,echo=FALSE}
 
-make_knitr_table_all(mod=mod0)
+mod<-mod0
+make_knitr_table_all(mod, which_tau=which(taus_mod%in%seq(0.05,0.95,0.05)),taus=taus_mod)
 
 ```
 
-Most of the effects are insignificant for the mean return but become significant for $\tau$-values apart from $0.5$. That is, higher moments of the conditional distribution are affected by the considered investment opinion channel proxies. Also, the explained variance proportion becomes higher in the tails of the conditional return distribution. Moreover, some of the effects appear to be significant only for lower ($(btm_{i,t-1}<1)\cdot post\_ean_{i,t}$ and $hv_tone_{i,t}$) and some - only for higher expectiles  ($post\_ean_{i,t}$).
+Many of the effects are insignificant for the mean return but become significant for $\tau$-values apart from $0.5$. That is, higher moments of the conditional distribution are affected by the considered investment opinion channel proxies. Also, the explained variance proportion becomes higher in the tails of the conditional return distribution. Moreover, some of the effects appear to be significant only for lower ($(btm_{i,t-1}<1)\cdot post\_ean_{i,t}$ and $hv_tone_{i,t}$) and some - only for higher expectiles  ($post\_ean_{i,t}$).
 
 
 In the next figure, we plot the attention related effects with $95\%$-CI in Figure \@ref(fig:figure1):
@@ -453,7 +532,7 @@ lbls<-c(bquote(turn[it-1]),bquote(pre_ean[it]),bquote(ean[it]),bquote(post_ean[i
 al<-0.95
 wo<-c("turnover1" ,"pre_ean","ean","post_ean","news")
 
-plot_eefects(mod0,which_ones=wo,lbls=lbls[1:length(wo)])
+plot_eefects(mod,which_ones=wo,which_tau=which(taus_mod%in%seq(0.05,0.95,0.05)),lbls=lbls[1:length(wo)])
 
 ```
 Note that the effects of $turn_{i,t-1}$, $ean_{i,t}$ and $news_{i,t}$ are negative for low expectiles and become positive for higher $\tau$-levels. For the effect of $pre\_ean_{i,t}$ the opposite holds. We explain the findings with buyer excitement ("the rumor") on the days before the earnings announcements and seller excitement on news arrivals ("the news part") for low expectiles of return.
@@ -468,7 +547,7 @@ lbls<-c(bquote(btm[it-1]),bquote(log(size)[it]),bquote(turn[it-1]*days_ean[it]),
 al<-0.95
 wo<-c("btm1","log(Size)","I(turnover1 * days_ean)","I((btm1 < 1) * post_ean)")#, "I(turnover1 * news)")
 
-plot_eefects(mod0,which_ones=wo,lbls=lbls[1:length(wo)])
+plot_eefects(mod,which_ones=wo,which_tau=which(taus_mod%in%seq(0.05,0.95,0.05)),lbls=lbls[1:length(wo)])
 
 ```
 The effects of $btm_{i,t-1}$ and of $\log(size_{i,t})$ appear to be positive for low expectiles and become increasingly negative for high $\tau$, indicating robustness of value stocks and large firms to extreme states of the market. Shares turnover around earnings announcements exhibits a negative effect on low and a positive effect on high expectiles. Retunrs of firms with small btm ratios (<1) and low return states react negatively in the post earning period.
@@ -483,31 +562,36 @@ lbls<-c(bquote(surp[it]),bquote(lm_tone[it]),bquote(hv_tone[it]),
 al<-0.95
 wo<-c("I(surprise * 100)","LM.TONE","HIV4.TONE","ML.TONE")
 
-plot_eefects(mod0,which_ones=wo,lbls=lbls[1:length(wo)])
+plot_eefects(mod,which_ones=wo,which_tau=which(taus_mod%in%seq(0.05,0.95,0.05)),lbls=lbls[1:length(wo)])
 
 ```
 The effect of earning surprise $surp_{i,t}$ is only for quite low expectiles significant. Whereas the effects of $lm\_tone_{i,t}$ and $ml\_tone_{i,t}$ do not differ significantly from a constant effect across expectiles, $hv\_tone_{i,t}$ seems to have an increasing impact on low return expectiles. Overall, the sentiment effects are positive, that is, the sign of the sentiment tone determines the expected direction of return reaction.
 
-```{r}
+```{r,echo=FALSE}
+
+lmtone_list<-split(data$LM.TONE[data$news==1],data$crab[data$news==1])
+hvtone_list<-split(data$HIV4.TONE[data$news==1],data$crab[data$news==1])
+mltone_list<-split(data$ML.TONE[data$news==1],data$crab[data$news==1])
+# surp_list<-split(data$surprise[data$ean==1],data$crab[data$ean==1])
+
 mposlm<-unlist(lapply(lmtone_list,function(x){mean(x[x>0])}))
 mposhv<-unlist(lapply(hvtone_list,function(x){mean(x[x>0])}))
 mposml<-unlist(lapply(mltone_list,function(x){mean(x[x>0])}))
 
 mposs<-c(mposlm[1],mposhv[1],mposml[1])
 
-coefss<-c(mod0$coefs["LM.TONE",1],mod0$coefs["HIV4.TONE",1], mod0$coefs["ML.TONE",1])
-scoefs<-c(mod0$ses["LM.TONE",1], mod0$ses["HIV4.TONE",1],mod0$ses["ML.TONE",1])
+tau_exmpl<-0.05
+
+coefss<-c(mod$coefs["LM.TONE",which(taus_mod==tau_exmpl)],mod$coefs["HIV4.TONE",which(taus_mod==tau_exmpl)], mod$coefs["ML.TONE",which(taus_mod==tau_exmpl)])
+scoefs<-c(mod$ses["LM.TONE",which(taus_mod==tau_exmpl)], mod$ses["HIV4.TONE",which(taus_mod==tau_exmpl)],mod$ses["ML.TONE",which(taus_mod==tau_exmpl)])
 lcoefs<-coefss-qnorm(1-al/2)*scoefs
 hcoefs<-coefss+qnorm(1-al/2)*scoefs
 
 
 
-mnews<-mod0$coefs["news",1]+sum(coefss*mposs)
-lnews<-mod0$coefs["news",1]+ qnorm(1-al/2)*mod0$ses["news",1]+sum(lcoefs*mposs)
-hnews<-mod0$coefs["news",1]- qnorm(1-al/2)*mod0$ses["news",1]+sum(hcoefs*mposs)
-
-#whichc<-c(1,5)#e0.05,e0.25
-#effects<-mod0$coefs["news",whichc] + mposlm[c(1,2)]*mod0$coefs["LM.TONE",whichc] + mposhv[c(1,2)]*mod0$coefs["HIV4.TONE",whichc] + mposml[c(1,2)]*mod0$coefs["ML.TONE",whichc]
+mnews<-mod$coefs["news",which(taus_mod==tau_exmpl)]+sum(coefss*mposs)
+lnews<-mod$coefs["news",which(taus_mod==tau_exmpl)]+ qnorm(1-al/2)*mod$ses["news",which(taus_mod==tau_exmpl)]+sum(lcoefs*mposs)
+hnews<-mod$coefs["news",which(taus_mod==tau_exmpl)]- qnorm(1-al/2)*mod$ses["news",which(taus_mod==tau_exmpl)]+sum(hcoefs*mposs)
 
 ```
 
@@ -517,18 +601,6 @@ In summary, the effect of news arrivals is positive for higher expectiles and is
 with an asymptotic $95\%$-confidence interval given in brackets.
 
 
-
-
-
-
-<!--The effects of the btm ratio (approximating the 'rumor') and of the  news arrivals (the 'news') differ with the expectile levels.  Those effects change sign depending on whether low or high expectiles are considered.
-The effect of news arrivals is positive for higher expectiles and is sharpened by the sign of the associated sentiment tone. However, we observe a strongly negative effect of news arrivals for low return expectiles regardless of the news tone. For example, given the data, the maximum of scaled $lm\_tone$ over all days and stocks is `r round(quantile(data$LM.TONE,1),5)`, the respective coefficient for the $5\%$-expectile on news arrivals is \(`r round(mod0$coefs["news",1],5)`(`r round(mod0$coefs["news",1]- qnorm(1-al/2)*mod0$ses["news",1],5)`, `r round(mod0$coefs["news",1]+ qnorm(1-al/2)*mod0$ses["news",1],4)`)\) and on net tone is \(`r round(mod0$coefs["LM.TONE",1],5)`(`r round(mod0$coefs["LM.TONE",1]- qnorm(1-al/2)*mod0$ses["LM.TONE",1],5)`, `r round(mod0$coefs["LM.TONE",1]+ qnorm(1-al/2)*mod0$ses["LM.TONE",1],5)`)\), so the net effect of the "best" empirical tone would calculate: 
-\[`r round(mod0$coefs["news",1] + mod0$coefs["LM.TONE",1]* quantile(data$LM.TONE,1),5)` (`r round(mod0$coefs["news",1]- qnorm(1-al/2)*mod0$ses["news",1]+(mod0$coefs["LM.TONE",1]- qnorm(1-al/2)*mod0$ses["LM.TONE",1])*quantile(data$LM.TONE,1),5)`,
-`r round(mod0$coefs["news",1]+ qnorm(1-al/2)*mod0$ses["news",1]+(mod0$coefs["LM.TONE",1]+ qnorm(1-al/2)*mod0$ses["LM.TONE",1])*quantile(data$LM.TONE,1),5)`)\]
-
-with an asymptotic $95\%$-confidence interval given in brackets.
--->
-
 That is, in low return state also positive news can lead to a negative effect on the excess return. We explain this effect with the buyer excitement prior to earnings announcements following by seller excitement on news days for returns in lower expectiles connected to the trading strategy 'Buy on rumor, sell on news' for the low return state. That is, some investors tend to buy equities with low returns when they expect their growth (the 'rumor' part)  (when they are believed to be underpriced) and sell low return stocks to ride on the hype of positive news arrivals. 
 
 This effect can be also connected to the 'sidedness' of @SARKAR2009. The negative effect of (even positive) news can be explained by disproportionaly higher seller quote at news arrivals in case of low performing equities. The positive effect of btm ratio arises as a result of buyer 'sidedness' hunting the equities with low returns but promising expected performance (high btm).
@@ -536,57 +608,282 @@ This effect can be also connected to the 'sidedness' of @SARKAR2009. The negativ
  maybe also this as explaination on limit-order-book level: https://www.sciencedirect.com/science/article/abs/pii/S2214635014000240  
 
 
-<!--While using another dictionary, we still observe the similar changing sign effect of news arrivals which is then corrected for low $\tau$-values (low return expectiles). The correction is vanishing with higher $\tau$. Interestingly, whereas the tone coefficient gains magnitude for lower $\tau$s in the case of the HV dictionary, the contrary is true for the LM dictionary: the tone coefficient is constant for low expectiles and it increases with  $\tau$. Hence the HV dictionary seems to capture important tone for lower expectiles and the LM dictionary - for both low and high expectiles focusing more on higher levels. 
- -->
-
-<!--## ERRE with combined sentiment
-
-In this model specification, we use $comb\_tone_{i,t}$ set to $(1-\tau)\cdot hv\_tone_{i,t}+ \tau\cdot lm\_tone_{i,t}$ in order to overweight $hv\_tone_{i,t}$ for low and to overweight $lm\_tone_{i,t}$ for high $\tau$-values:
-
-\begin{equation}
-e_\tau(r_{i,t}) = \beta_{0,\tau} + \beta_{1,\tau}\cdot \log(size_{i,t}) + \beta_{2,\tau} \cdot btm_{i,t-1} + \beta_{3,\tau}\cdot turn_{i,t-1}+\beta_{4,\tau}\cdot alpha_{i,t}+\beta_{5,\tau}\cdot nq_{i,t} + \beta_{6,\tau}\cdot news_{i,t} + \beta_{7,\tau}\cdot comb\_tone_{i,t}(\#eq:mod3)
-\end{equation}
- with
- 
-We fit the model for $\tau\in\{0.05,0.1,\ldots,0.95\}$ and show 
-
-```{r, echo=FALSE}
-formul<-as.formula("r_.ab.~ log(Size)+ btm1 +NASDAQ+ean+pre_ean+post_ean+I(post_ean*surprise1*100)+turnover1+news+ comb.tone +I((btm1<1)*post_ean) + I(turnover1*days_ean)")
-
-mod3<-fit_eeffects(formul=formul,dat=data[ind_use,])
-
+```{r,echo=FALSE}
+#save(file="mod0.RData",mod0)
+#rm(mod0)
 ```
 
-show the resulting coefficients, their significance and the associated $R^2$ in table \@ref(tab:table4).
 
-```{r table4,echo=FALSE}
-make_knitr_table(mod3,  sent="comb",caption = "Coefficients and $R^2$ of the ERRE models with combined dictionary sentiment and different $\\tau$s"
-                 #,
-                 #id="id=\"table3\""
-                 )
+# Impact of investor opinion on expected shortfall of the returns
 
-```
+A frequently used risk measure is expected shortfall $ES_{\alpha}$ connected to a certain quantile $q_\alpha$ of the target distribution. For the lower tail of the later this risk measure is defined as $ES_\alpha = \mathbb E(Y|Y<q_\alpha)$. 
 
-plot the sentiment related effects with $95\%$-CI in Figure \@ref(fig:figure4):
+@JONES1994 shows that there is a one-to-one correspondence between quantiles and expectiles of a distribution. Based thereof, @Taylor2008 proposes to use expectiles to estimate $ES_{\alpha}$ with $\alpha\leq 0.5$ via:
 
-```{r figure4, fig.cap="Coefficient profiles of sentiment related variables for different $\\tau$-levels and LM/HV combined dictionary based sentiment ", echo=FALSE}
-effe<-"comb"# which effect is measured lm, hv, ml            
-lbls<-c(bquote(btm[it-1]),bquote(news[it]), 
-        bquote(.(paste0(effe,"_tone"))[it])
-)
-wo<-c("btm1", "news","comb.tone")
+\begin{align}
+ES_{\alpha} &= \left(1+\frac{\tau}{(1-2\tau)\alpha}\right)e_{\tau} - \frac{\tau}{(1-2\tau)\alpha}e_{0.5},
+\end{align}
 
-plot_eefects(mod3,which_ones=wo,lbls=lbls[1:length(wo)])
-```
+where $\alpha\in(0,0.5]$ denotes the quantile level, $\tau\in(0,1)$ is the associated expectile level, and $e_{\tau}$ is the respective expectile. As @Taylor2008, the same relation holds for the conditional expected shortfall with respect to the conditional expectile.
 
-The model fit is improved in terms of $R^2$. The combined dictionary model still can not "beat" the machine learning approach to the sentiment tone extraction. However, it clearly replicates the "edge" effect in an U-shape coefficient profile and is to prefer in terms of complexity and transparency/ interpretability of the results. 
+@yao1996 show the existence of a bijective function $\tau:(0,1)\rightarrow (0,1)$ such that $q_\alpha = e_{\tau(\alpha)}$.
+Using the results of @yao1996\footnote{@yao1996 specify $\tau(\alpha)$ as: 
+\[\tau(\alpha) = \frac{-\alpha q_\alpha + G(q_\alpha)}{-e_{0.5} + 2G(q_\alpha) + (1+2\alpha)q_\alpha},\]
+where $G(q)=\int_{-\infty}^qydF(y)$ is the partial moment function and $F(y)$ is the cumulative distribution function (cdf) of $y$.}
+@Waltrup2015 further connect the corresponding tail index estimates $\hat q_\alpha$ and $\hat e_{\hat \tau(\alpha)}:=\hat e_\hat\tau$ through estimating $\hat\tau(\alpha)$ from the data and show that such expectile based estimates are more efficient in simulations.
+
+
+Following the approach of @Taylor2008, the plug-in estimator for the expected conditional shortfall based on the estimated conditional expectile and the relation $\hat\tau(\alpha)$ in our case is:
+
+\[\begin{align}
+ES_{\alpha}(r_{i,t}|x_{i,t},z_i) &= \left(1+\frac{\hat\tau(\alpha)}{\big(1-2\hat\tau(\alpha)\big)\alpha}\right)e_{\hat\tau(\alpha)}(r_{i,t}|x_{i,t},z_i) - \frac{\hat\tau(\alpha)}{\big(1-2\hat\tau(\alpha)\big)\alpha}e_{0.5}(r_{i,t}|x_{i,t},z_i)(\#eq:es)\\
+&=\tilde \beta_{0,\alpha} + \tilde\beta_{\alpha}^\top \cdot x_{i,t} + \tilde\gamma_\alpha^\top\cdot z_i,\nonumber
+\end{align}\]
+
+<!--where $\tilde\beta = \left(1+\frac{\hat\tau(\alpha)}{\big(1-2\hat\tau(\alpha)\big)\alpha}\right)\cdot \hat \beta_{\hat\tau(\alpha)} - \frac{\hat\tau(\alpha)}{\big(1-2\hat\tau(\alpha)\big)\alpha} \cdot \hat\beta_{0.5}$
 -->
 
-```{r,echo=FALSE}
-save(file="mod0.RData",mod0)
+where for $\theta\in\{\beta_0,\beta, \gamma\}$:
+
+\[\begin{align}\tilde\beta_\alpha &= \hat \beta_{\hat\tau(\alpha)} - \frac{\hat\tau(\alpha)}{\big(1-2\hat\tau(\alpha)\big)\alpha}\cdot \left(\hat\beta_{0.5} -\hat \beta_{\hat\tau(\alpha)}\right)(\#eq:tbeta)\end{align}\]
+
+and $\tilde\beta_0$ and $\tilde\gamma$ are defined analogous.
+
+To obtain the actual estimates, we first estimate the conditional expectiles of return as in \@ref(eq:mod0) for a fine grid of $\hat e_\tau$ with $\tau = 0.001, 0.0025, 0.005,0.01,0.02,\ldots, 0.1$. Based thereof, we construct an empirical cdf by counting the observations below the estimated expectile profile for each of the $\tau$-levels, such that for each $\tau$ we have the corresponding quantile index $\alpha$. We then interpolate linearly between the resulting points to obtain $\hat\tau(\alpha)$ particulary for $\alpha\in\{0.01,0.05,0.1\}$. The estimated correspondence is plotted in Figure \@ref(fig:figure4).
+
+
+```{r, echo=FALSE}
+## for a range of tau values compute the expectile
+# taus_f<-c(0.001,0.0025,0.005,0.01,seq(0.01,0.08,0.01))
+# mod_f<-fit_eeffects(formul=formul,dat=data[ind_use,],taus=taus_f)
+# #save(mod_f, file="mod_f.RData")
+# e_taus_f<-unlist(lapply(mod_f$mods,fitted)); e_taus_f<-matrix(e_taus_f,,length(mod_f$mods))
+# alphas_f<-apply(e_taus_f,2,function(q,x){sum(x<q)}, x=data$r_.ab.[ind_use])/length(data$r_.ab.[ind_use])
+# 
+# tau_alpha<-cbind(taus_f,alphas_f)
+# colnames(tau_alpha) = c("tau","alpha")
+# 
+# save(tau_alpha, file="tau_alpha.RData")
+
+
+load("tau_alpha.RData")
+
+#linear interpolation
+tau_new = approx(tau_alpha[,2], tau_alpha[,1], xout=c(0.01,0.05,0.1))
+#new model for the target tau
+mod_new<-fit_eeffects(formul=formul,dat=data[ind_use,],taus=c(tau_new$y,0.5))
+
 ```
 
 
+For instance, in our model specification the lower quantile levels $\alpha\in\{0.01,0.05,0.1\}$ correspond to the expectile levels $\tau\in\{`r paste(round(tau_new[[2]],4), collapse=",")`\}$ respectively.
+
+```{r,figure4, fig.cap="The estimated relation between the expectile level $\tau$ and the quantile level $\alpha$ for the NASDAQ return distribution", echo=FALSE}
+plot(tau_alpha[,2],tau_alpha[,1], type="l",ylim=c(0,0.12),xlim=c(0,0.15), ylab="", xlab="", axes=F)
+
+points(tau_new$x,tau_new$y,col=2, pch=16)
+axis(1, at=c(0,0.01,0.05,0.1,0.15), labels=c(0,0.01,0.05,0.1,0.15))
+axis(2, las=1, at=c(0,0.05,0.1), labels=c(0,0.05,0.1))
+par(xpd=T)
+
+text(0,0.11,bquote(hat(tau)(alpha)))
+text(0.155,0,bquote(alpha))
+arrows(c(0.01,0.05,0.1),rep(-0.004,3),tau_new$x,tau_new$y, col=2, lty=2,code=0)
+arrows(rep(-0.005,3), tau_new$y, tau_new$x,tau_new$y,col=2, lty=2,code=0)
+#text(0.01, tau_new$y[1]+0.01, bquote(hat(tau)(0.01)==0.0055),cex=0.7)
+
+text(-0.012, tau_new$y[1]+0.002, round(tau_new$y[1],4),cex=0.7,col=2)
+text(-0.012, tau_new$y[2]+0.002, round(tau_new$y[2],4),cex=0.7,col=2)
+text(-0.012, tau_new$y[3]+0.002, round(tau_new$y[3],4),cex=0.7,col=2)
+
+```
+
+
+For $\alpha\in\{0.01,0.05,0.1\}$ we compute the resulting coefficients $\tilde\beta_\alpha$ which stand for the investor opinion effects on expected shortfall. The associated $95\%$ confidence intervals are obtained by cross-sectional and temporal bootstrap as defined in @Kapetanios2008. To preserve the possible serial dependence structure we use block bootstrap for the time-series dimension with block length of 60. 
+
+```{r, echo=FALSE}
+target_alphas<-c(0.01,0.05,0.1)
+which_ones=(1:14)
+tbeta0<-list(0)
+for(j in 1:length(target_alphas)){
+     tbeta0[[j]]<-mod_new$coefs[which_ones,j] -
+       tau_new$y[j]/((1-2*tau_new$y[j])*target_alphas[j])*(mod_new$coefs[which_ones,ncol(mod_new$coefs)]-mod_new$coefs[which_ones,j])
+   }
+```
+
+
+For each bootstrap draw $b=1,\ldots, B$, we, first, estimate the ER model for a fine grid of $\tau$-values in the left tail $0.001,0.0025,0.005,0.01,0.02,\ldots,0.1$. Then using the fitted conditional expectiles, we estimate the correspondence $\hat\tau^{(b)}(\alpha)$ by assigning to each $\tau$-value the proportion of observations $\alpha$ in the bootstrap sample lying below the expectile profile $\{e_{tau}(r^{(b)}_{it})\}_{i=1,t=1}^{N,T}$. By interpolating linearly between the points, we determine the needed $\tau$-levels for the target $\alpha$-levels $0.01,0.05,0.1$. The estimated $\hat\tau(\alpha)$ with $95\%$ bootstrap confidence intervals is presented in Figure \@ref(fig:figure5)
+Finally, we compute $\tilde\beta^{(b)}_\alpha$ for each bootstrap sample as specified in \@ref(eq:tbeta), that is:
+\[\tilde\beta^{(b)}_\alpha = \hat \beta^{(b)}_{\hat\tau^{(b)}(\alpha)} - \frac{\hat\tau^{(b)}(\alpha)}{\big(1-2\hat\tau^{(b)}(\alpha)\big)\alpha}\cdot \left(\hat\beta_{0.5} -\hat \beta_{\hat\tau^{(b)}(\alpha)}\right)\]
+
+Based on the resulting bootstrap distribution of $\left\{\tilde\beta^{(b)}_\alpha\right\}_{b=1}^B$ we then construct the confidence intervals.
+
+```{r, echo=FALSE}
+# ## bootstrapping the confidence intervals (run on server)
+# 
+# # bootstrap preparation
+# 
+# #T
+# dates<-unique(data$Date)
+# period<-60
+# periods_start<-seq(1,length(dates)-period,by=period)
+# 
+# blocksT<-list(0)
+# 
+# for(i in 1:length(periods_start)){
+#   blocksT[[i]]<-dates[seq(periods_start[i], by=1, length.out=period)]
+# }
+# 
+# #N
+# individs<-unique(data$Ticker)
+# 
+# 
+# 
+# #params
+# which_ones = (1:14)
+# target_alphas<-c(0.01,0.05,0.1)
+# 
+# 
+# #boot size
+# B<-100
+# 
+# 
+# #tau(alpha) placeholder
+# tau_alpha_b<-matrix(NA,nrow(tau_alpha),B)
+# rownames(tau_alpha_b)<-tau_alpha[,1]
+# 
+# tbeta<-list(matrix(NA,length(which_ones),B),
+#             matrix(NA,length(which_ones),B),
+#             matrix(NA,length(which_ones),B)
+#             )
+
+```
+
+
+```{r, echo=FALSE}
+# BB=100
+# for (b in 1:BB){
+#   print(b)
+#   set.seed(123+b)
+#   ############bootstrap
+#   #T
+#   bootT<-sample.int(length(blocksT),replace=T)
+#   dataBoot<-NULL
+#   for(i in bootT){
+#     dataBoot<-rbind(dataBoot,data[data$Date%in%blocksT[[i]],])
+#   }
+#   #N
+#   indiv<-individs[sample.int(length(individs),replace=T)]
+#   dataBootTN<-NULL
+#   for(i in 1:length(indiv)){
+#     dataBootTN<-rbind(dataBootTN,dataBoot[dataBoot$Ticker==indiv[i],])
+#   }
+#   dataBootTN<-data.frame(dataBootTN)
+#   
+#   ###############estimate tau(alpha)
+#   ind_use<-which(!is.na(dataBootTN$btm1))
+#   mod_b<-fit_eeffects(formul=formul,dat=dataBootTN[ind_use,],taus=tau_alpha[,1])
+#   e_taus_f<-unlist(lapply(mod_b$mods,fitted)); e_taus_f<-matrix(e_taus_f,,length(mod_b$mods))
+#   tau_alpha_b[,b]<-apply(e_taus_f,2,function(q,x){sum(x<q)},
+#                          x=dataBootTN$r_.ab.[ind_use])/length(dataBootTN$r_.ab.[ind_use])
+#   #linear interpolation
+#   tau_new_b = approx(tau_alpha_b[,b], tau_alpha[,1], xout=target_alphas)[[2]]
+#   
+#   ##############re-estimate the model for the target taus
+#   mod_b<-fit_eeffects(formul=formul,dat=dataBootTN[ind_use,],taus=c(tau_new_b,0.5))
+#   coefsBoot<-mod_b$coefs[which_ones,]
+#   
+#   #compute ES coefs
+#   for(j in 1:length(target_alphas)){
+#     tbeta[[j]][,b]<-coefsBoot[which_ones,j] -
+#       tau_new_b[j]/((1-2*tau_new_b[j])*target_alphas[j])*(coefsBoot[which_ones,ncol(coefsBoot)]-coefsBoot[which_ones,j])
+#   }
+#   
+# 
+# }
+
+```
+
+
+
+
+```{r, echo=FALSE}
+#load("tau_alpha.RData")
+load("tau_alpha_b.RData")
+load("tbeta.RData")
+```
+
+
+```{r, figure5, fig.cap="The estimated relation between the expectile level $\tau$ and the quantile level $\alpha$ for the NASDAQ return distribution with $95\%$ bootstrap confidence intervals", echo=FALSE}
+library(scales)
+plot(tau_alpha[,2], tau_alpha[,1],type="l",col=NA, ylab="", xlab="", axes=F, ylim=c(0,0.1), xlim=c(0,0.15))
+
+axis(1, at=c(0,0.01,0.05,0.1,0.15), labels=c(0,0.01,0.05,0.1,0.15))
+axis(2, las=1, at=c(0,0.05,0.1), labels=c(0,0.05,0.1))
+par(xpd=T)
+
+text(0,0.1,bquote(hat(tau)(alpha)))
+text(0.15,0,bquote(alpha))
+
+#text(0.01, tau_new$y[1]+0.01, bquote(hat(tau)(0.01)==0.0055),cex=0.7))
+# for(i in 1:ncol(tau_alpha_b)){
+#   lines(rownames(tau_alpha_b), tau_alpha_b[,i], col=alpha("gray44",0.3))
+# }
+lines(apply(tau_alpha_b,1,mean), rownames(tau_alpha_b), col=1,lwd=3,lty=3)
+lines(apply(tau_alpha_b,1,quantile,0.025), rownames(tau_alpha_b), col=4,lty=2,lwd=3)
+lines(apply(tau_alpha_b,1,quantile,0.975), rownames(tau_alpha_b), col=4,lty=2,lwd=3)
+lines(tau_alpha[,2], tau_alpha[,1], lwd=3,col=alpha(2,0.8))
+```
+```{r, echo=FALSE}
+#compute 95% ci
+tbeta_m<-tbeta_h<-tbeta_l<-NULL
+for(i in 1:length(tbeta)){
+  tbeta_m<-cbind(tbeta_m, apply(tbeta[[i]],1,mean))
+  tbeta_h<-cbind(tbeta_h, apply(tbeta[[i]],1,quantile, 0.975))
+  tbeta_l<-cbind(tbeta_l, apply(tbeta[[i]],1,quantile, 0.025))
+}
+```
+
+```{r, echo=FALSE}
+# #plot 95% ci
+# par(mfrow=c(2,2))
+# for(i in 1:length(target_alphas)){
+#   plot(1:14,tbeta0[[i]],type="l",col=NA,ylim=c(-0.5,0.5))
+# 
+# lines(1:14, apply(tbeta[[i]],1,mean), col=1,lwd=3)
+# lines(1:14, apply(tbeta[[i]],1,quantile,0.025), col=4,lty=2,lwd=3)
+# lines(1:14, apply(tbeta[[i]],1,quantile,0.975), col=4,lty=2,lwd=3)
+# lines(1:14, tbeta0[[i]], lwd=3,col=alpha(4,0.8))
+# abline(h=0, lwd=1,col=2)
+# }
+
+```
+```{r, echo=FALSE}
+options(scipen=999)
+tab<-cbind(paste0(round(tbeta[[1]][which_ones],4)," (",round(tbeta_l[which_ones,1],4),",",round(tbeta_h[which_ones,1],4),")"),
+           paste(round(tbeta[[2]][which_ones],4)," (",round(tbeta_l[which_ones,2],4),",",round(tbeta_h[which_ones,2],4),")"),
+           paste(round(tbeta[[3]][which_ones],4)," (",round(tbeta_l[which_ones,3],4),",",round(tbeta_h[which_ones,3],4),")")
+                                 )
+
+colnames(tab)<-c("$ES_{0.01}$", "$ES_{0.05}$","$ES_{0.1}$")
+rownames(tab)<-c("Constant","$turn_{i,t-1}$","$pre\\_ean_{i,t}$","$ean_{i,t}$","$post\\_ean_{i,t}$","$news_{i,t}$",
+                                           "$\\log(size_{i,t})$","$btm_{i,t-1}$", "$turn_{i,t-1}*days\\_ean_{i,t}$", "$(btm_{i,t-1}\\leq 1)*post\\_ean_{i,t}$",
+                                           "$supr_{i,t}$",  "$lm\\_tone_{i,t}$", "$hv\\_tone_{i,t}$", "$ml\\_tone_{i,t}$")
+
+caption<-"The estimated coefficients $\\tilde\\beta_\\alpha$ measuring the effects of investor opinion on the expected shortfall. The $95\\%$ bootstrap confidence intervals are given in brakets."
+
+ knitr::kable(tab, align = "llll",
+               col.names = colnames(tab),
+               row.names = TRUE,
+               #table.attr = "id=\"table1\"",
+               digits = 5,
+               caption = caption
+  )
+
+```
+We can confirm significant effects of $pre\_ean$, $ean$, $news$, turnover around earnings announcement days $turn\cdot days\_ean$, post earnings announcements effect of small btm ratio $(btm\leq 1)\cdot post\_ean$. Neither $lm\_tone$ nor $ml\_tone$ show significant impact. However, for $hv\_tone$ we find a significant effect for $\alpha=0.05$ and $0.1$.
+
+# Conclusion
 
 # References
 
