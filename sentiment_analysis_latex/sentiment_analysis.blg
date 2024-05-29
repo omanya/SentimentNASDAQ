@@ -1,0 +1,114 @@
+This is BibTeX, Version 0.99d (TeX Live 2019/Debian)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: sentiment_analysis_jbes.aux
+The style file: jasa.bst
+Database file #1: references.bib
+Bibliography style `jasa.bst' by Russ Lenth, April 1996 (rev. Mar. 1999)
+Too many commas in name 1 of "Eberl, A., Klar, B." for entry eberl2022
+while executing---line 1172 of file jasa.bst
+Too many commas in name 1 of "Eberl, A., Klar, B." for entry eberl2022
+while executing---line 1172 of file jasa.bst
+[ALNASSERI2021]
+[daniel2020]
+[Antweiler2004]
+[AUDRINO2020]
+[baker2007investor]
+[barber2022]
+[barberis1998model]
+[Barry2018]
+[bellini2018]
+[BERKMAN2009]
+[Cao2002]
+[chatterjee2012]
+[chen2022]
+[corwin2008]
+[DAS2007]
+[de1990noise]
+[dellavigna2009]
+[BARRY2016]
+[DONNELLY2014]
+[drake2017]
+[eberl2022sk]
+[eberl2022]
+Too many commas in name 1 of "Eberl, A., Klar, B." for entry eberl2022
+while executing---line 1246 of file jasa.bst
+Too many commas in name 1 of "Eberl, A., Klar, B." for entry eberl2022
+while executing---line 1246 of file jasa.bst
+[ekholm2007]
+[ENGELBERG2018]
+[FAMA1992]
+[FANG2021]
+[FRANKEL2022]
+[FRIEND1988]
+[fuess2020]
+[HAGENAU2013]
+[HE2022]
+[henry2006]
+[JEGADEESH2013]
+[JONES1994]
+[Kapetanios2008]
+[KIM2014]
+[Kneib2013]
+[Koenker1978]
+[KOTHARI1997]
+[Loh2010]
+[LOUGHRAN2011]
+[luss2009]
+[Ma2018]
+[Maheu2004]
+[Newey1987]
+[NGUYEN2015]
+[NI2015]
+[Peasnell1982]
+[PONTIFF1998]
+[SARKAR2009]
+[SHANG2014]
+[smales2016]
+[Su2021]
+[Taylor2008]
+[waltrup2015]
+[yao1996]
+[YUAN2015]
+[Zeileis2020]
+You've used 58 entries,
+            2332 wiz_defined-function locations,
+            917 strings with 13183 characters,
+and the built_in function-call counts, 26357 in all, are:
+= -- 2572
+> -- 1348
+< -- 33
++ -- 398
+- -- 380
+* -- 2547
+:= -- 4587
+add.period$ -- 116
+call.type$ -- 58
+change.case$ -- 311
+chr.to.int$ -- 58
+cite$ -- 116
+duplicate$ -- 979
+empty$ -- 1722
+format.name$ -- 480
+if$ -- 5211
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 57
+newline$ -- 178
+num.names$ -- 232
+pop$ -- 305
+preamble$ -- 1
+purify$ -- 369
+quote$ -- 0
+skip$ -- 680
+stack$ -- 59
+substring$ -- 1990
+swap$ -- 173
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 522
+warning$ -- 0
+while$ -- 235
+width$ -- 0
+write$ -- 639
+(There were 4 error messages)
