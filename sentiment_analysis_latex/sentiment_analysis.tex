@@ -130,7 +130,7 @@
 }}
 \def\endkeywords{\par}
 
-
+\date{}
 
 \begin{document}
 
@@ -144,7 +144,7 @@
   \author{Maria Osipenko\hspace{.2cm}\thanks{Corresponding author: \href{mailto:osipenko@hwr-berlin.de}{\nolinkurl{osipenko@hwr-berlin.de}}}\\
     Hochschule für Wirtschaft und Recht Berlin\\
     and \\
-    Rui Ren \\
+    Rui Ren\thanks{This paper was supported through the project "IDA Institute for Digital Assets", CF166/15.11.2022, contract number  760046/23.05.2023, financed under the Romania’s National Recovery and Resilience Plan, Apel nr. PNRR-III-C9-2022-I8.} \\
     Universität Augsburg}
   \maketitle
 } \fi
@@ -213,7 +213,7 @@ In summary, our expectile regression approach allows to study heterogeneous effe
 
 Based on our expectile regression results, we confirm significant asymmetric effects of information arrivals with positive and negative sentiment on the shape of the conditional return distribution using non-parametric expectile-based measures of dispertion and skewness. Another advantage of our expectile-based approach lies in the risk management perspective. The well-known connection of expectiles to expected shortfall (\cite{Taylor2008}) makes our investigation of the factors impacting the expectiles of the returns potentially useful for risk management insights. Using the estimated effects from our conditional expectile model, we obtain plug-in estimates for the respective effects on the conditional expected shortfall and evaluate their significance via bootstrap.
 
-The contribution of our paper is threefold. First, by incorporating all three investor opinion channels in our model, we  conduct a more comprehensive analysis of the respective effects, which makes our approach stand out from the previous related studies. Second, we estimate the effects of investor sentiment on the whole distribution of asset returns, breaking it down to a fine grid of tail indices - expectiles - avoiding any distributional assumptions or model constrains to particular conditional moments. Third, based on the connection of expectiles and expected shortfall, we obtain the estimated effects of investor sentiment directly on the expected shortfall of returns, which is highly relevant for risk management and uncovered in the existing studies.
+The contribution of our paper is threefold. First, by incorporating all three investor opinion channels in our model, we  conduct a more comprehensive analysis of the respective effects, which makes our approach stand out from the previous related studies. Second, we estimate the effects of investor sentiment on the whole distribution of asset returns, breaking it down to a fine grid of tail indices - expectiles - avoiding any distributional assumptions or model constrains to particular conditional moments. Third, based on the connection of expectiles and expected shortfall, we obtain the estimated effects of investor sentiment directly on the expected shortfall of returns, which is highly relevant for risk management and uncovered in the existing studies.\footnote{The code for the analysis is available at \href{https://github.com/omanya/SentimentNASDAQ/}{https://github.com/omanya/SentimentNASDAQ/}}
 
 The rest of the paper is organized as follows. First, we introduce our data and the variables we use to proxy the investor opinion formation channels. Next, we describe our conditional expectile model and present our estimation results.  A close up analysis of the effects on the resulting shape of the conditional return distribution and expected shortfall follows. Finally, we conclude and point to possible further research direction.
 
@@ -228,7 +228,7 @@ Table \ref{tab:table00} in the Appendix describes the textual corpus used to cal
 
 
 We combine this data with the records on earnings announcement dates, information on earnings per share and on average earnings forecasts from the kaggle platform (accessed on
-21.September 2022: 
+21.September 2022:
 https://www.kaggle.com/datasets/tsaustin/us-historical-stock-prices-with-earnings-data) and with the sector information from NASDAQ website https://www.nasdaq.com/market-activity/stocks/screener (accessed on 10 September 2022).
 
 Based on the available data and on previous findings in the literature, we construct the proxies for the three channels of information flow: investor attention, investor sentiment and investor perception described in the following.
@@ -727,18 +727,18 @@ A potential direction for future research could involve extending investor senti
 \subsection*{List of the firm tickers in the dataset}\label{list-of-the-firm-tickers-in-the-dataset}}
 
 `AAPL', `AMZN', `TSLA', `FB', `BA', `NFLX', `DIS', `EFX', `BAC', `INTC', `F', `GE', `GM',
-`MSFT', `SBUX', `AIR', `AAL', `IBM', `JPM', `CMG', `WFC', `C', 
-`TWTR', 
+`MSFT', `SBUX', `AIR', `AAL', `IBM', `JPM', `CMG', `WFC', `C',
+`TWTR',
 `WMT', `MCD', `AMD', `NVDA', `JNJ', `GS',
 `BABA', `CAT', `MU', `CSCO', `XOM', `CVX', `BP', `GOOGL', `GPRO', `COST', `HD', `NKE', `KO',
-`AXP', `TGT', 
-`ATVI', 
+`AXP', `TGT',
+`ATVI',
 `CMCSA', `DAL', `LMT', `T', `ABBV', `PFE', `GILD', `ADBE', `CRM', `VZ', `AVGO', `BX',
 `LULU', `BLK', `UNH', `KMI', `BBY', `PG', `AGI', `AMAT', `MRK', `M', `BIDU', `QCOM', `FDX', `AMGN',
-`BMY', `ORCL', 
+`BMY', `ORCL',
 %`BHP',
- `MA', `KR', `MO', `GME', `PM', `CHK', `MMM', 
-%`BBBY', 
+ `MA', `KR', `MO', `GME', `PM', `CHK', `MMM',
+%`BBBY',
 `COP', `IRBT', `MS',
 `FCX', `HAL', `HPQ', `UAL',`JWN', `CVS', `V', `EA', `STZ', `GLW', `ADP', `AZN', `EBAY', `ACN', `PEP'.
 
