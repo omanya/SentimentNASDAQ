@@ -1,6 +1,5 @@
 # SentimentNASDAQ
 Distributional effects of news arrival and investor sentiment on NASDAQ returns
 
-The main file is sentiment_analysis_clean.Rmd. It generates a html document and should be knitted first, because the models are fitted there.
+The main file is [sentiment_analysis.Rmd}(https://github.com/omanya/SentimentNASDAQ/blob/main/sentiment_analysis.Rmd). It generates a pdf document with the tables and the figures as in the paper.
 
-Then the sentiment_presentation.Rmd can be started to get the beamer presentation (not updated).
