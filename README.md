@@ -1,0 +1,5 @@
+# Investor opinion formation and the distribution of stock returns
+
+We examine how investor opinion influences the entire distribution of abnormal stock returns using expectile regression. We differentiate between the aspects of investor attention, perception, and sentiment, employing firm-specific proxies for each. We find that the effects vary with the expectile level $\tau$, representing the "extremeness level" of individual returns. While investor opinion effects are not always significant in mean regression, they demonstrate significance beyond the mean. Our approach generalizes the conditional mean analysis of investor opinion impacts to higher conditional moments. By leveraging the relationship between expectiles and expected shortfall, we further explore the tail effects of investor opinion.
+
+The codes on expectile regressions are contained in the main file [sentiment_analysis.Rmd](https://github.com/omanya/SentimentNASDAQ/blob/main/sentiment_analysis.Rmd). The codes for obtaining the sentiment measurements are in the directors `Sentiment Calculation codes`.
