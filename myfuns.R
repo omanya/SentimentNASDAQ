@@ -166,7 +166,7 @@ make_knitr_table<-function(mod, #fitted model
   #pvals and stars
   pvals<-2*(1-pt(abs(mod$coefs/mod$ses)[,which_tau], mod$mods[[1]]$df.residual))
   stars<-matrix(rep("",nrow(mod$coefs)),dim(pvals)[1],dim(pvals)[2])
-  stars[pvals<0.001]<-"***"; stars[pvals>0.001&pvals<0.01]<-"**";  stars[pvals>0.01&pvals<0.05]<-"*"
+  stars[pvals<0.01]<-"***"; stars[pvals>0.01&pvals<0.05]<-"**";  stars[pvals>0.05&pvals<0.1]<-"*"
   #add stars
   tab[tab>0]<-paste0(" ",tab[tab>0])
   tab<-matrix(paste0(tab,stars,sep=""),dim(pvals)[1],dim(pvals)[2])
@@ -318,7 +318,8 @@ make_knitr_table_all<-function(mod, #fitted model
                                which_ones=(1:14),
                                row.names=c("Constant","$turn_{i,t-1}$","$pre\\_ean_{i,t}$","$ean_{i,t}$","$post\\_ean_{i,t}$","$news_{i,t}$",
                                            "$\\log(size_{i,t})$","$btm_{i,t-1}$", "$turn_{i,t-1}*days\\_ean_{i,t}$", "$(btm_{i,t-1}\\leq 1)*post\\_ean_{i,t}$",
-                                           "$supr_{i,t}$",  "$lm\\_tone_{i,t}$", "$hv\\_tone_{i,t}$", "$ml\\_tone_{i,t}$","$R^2$")
+                                           "$supr_{i,t}$",  "$lm\\_tone_{i,t}$", "$hv\\_tone_{i,t}$", "$ml\\_tone_{i,t}$","$R^2$"),
+                               escape=FALSE
 
 ){
   library(knitr)
@@ -360,7 +361,8 @@ make_knitr_table_all<-function(mod, #fitted model
                row.names = TRUE,
                #table.attr = "id=\"table1\"",
                digits = 5,
-               caption = caption)
+               caption = caption,
+               escape = escape)
 }
 
 
