@@ -133,6 +133,6 @@ for _, month in enumerate(data_splt_months):
         pred = rf.predict(X_test_hidden).tolist()
         
 #References:
-#Ruben Winastwan (2021) https://towardsdatascience.com/text-classification-with-bert-in-pytorch-887965e5820f, accessed 18.06.2022 
-#Huggingface FinBERT model: https://huggingface.co/yiyanghkust/finbert-tone, accessed 18.06.2022
+#Ruben Winastwan (2021) https://towardsdatascience.com/text-classification-with-bert-in-pytorch-887965e5820f 
+#Huggingface FinBERT model: https://huggingface.co/yiyanghkust/finbert-tone
 #Yang, Y., Uy, M. C. S., and Huang, A. (2020). Finbert: A pretrained language model for financial communications. arXiv preprint arXiv:2006.08097.
